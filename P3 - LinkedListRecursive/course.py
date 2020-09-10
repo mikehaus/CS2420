@@ -1,3 +1,10 @@
+"""
+CS2420 - P3 Recursive Linked List
+course.py
+Mike Hollingshaus
+"""
+
+#-------- START Course Class Definition ------#
 
 class Course:
     """
@@ -45,3 +52,5 @@ class Course:
     """def __str__(self):
         returns formatted string as req'd by output
         return 'cs' + str(number()) + name() + ' Grade:' + str(grade()) + ' Credit Hours: ' + str(credit_hr())"""
+
+#-------- END Course Class Definition -------#
