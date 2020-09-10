@@ -16,7 +16,7 @@ class Course:
         Init function for Course Class.
         """
         try:
-            isinstance(number, int)
+            int(number)
             isinstance(name, str)
             isinstance(credit_hr, float)
             isinstance(grade, float)
@@ -29,6 +29,7 @@ class Course:
         self.coursecredit_hr = credit_hr
         self.coursegrade = grade
         self.next = None
+        self.prev = None
 
     def number(self):
         """returns attr course number"""
