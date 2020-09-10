@@ -42,6 +42,6 @@ class Course:
         """returns attr grade"""
         return self.coursegrade
 
-    def __str__(self):
-        """returns formatted string as req'd by output"""
-        return 'cs' + str(number()) + name() + ' Grade:' + str(grade()) + ' Credit Hours: ' + str(credit_hr())
+    """def __str__(self):
+        returns formatted string as req'd by output
+        return 'cs' + str(number()) + name() + ' Grade:' + str(grade()) + ' Credit Hours: ' + str(credit_hr())"""
