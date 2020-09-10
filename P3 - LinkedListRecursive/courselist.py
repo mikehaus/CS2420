@@ -71,7 +71,7 @@ class CourseList():
 
 def main():
     courselist = CourseList()
-    course = Course(230, "cs 230", 3.0, 2.5)
+    """course = Course(230, "cs 230", 3.0, 2.5)
     courselist.insert(course)
     course = Course(240, "cs 230", 3.0, 2.5)
     courselist.insert(course)
@@ -86,10 +86,10 @@ def main():
     course = Course(400, "cs 230", 3.0, 2.5)
     courselist.insert(course)
     course = Course(350, "cs 230", 3.0, 2.5)
-    courselist.insert(course)
-    course = Course(23.0, "cs 230", 3.0, 2.5)
-    course = Course(230, 240, 3.0, 2.5)
-    course = Course(230, "cs 230", 3, 2.5)
-    course = Course(230, "cs 230", 3.0, 2)
+    courselist.insert(course)"""
+    #course = Course(23.0, "cs 230", 3.0, 2.5)
+    #course = Course(230, 240, 3.0, 2.5)
+    #course = Course(230, "cs 230", 3, 2.5)
+    #course = Course(230, "cs 230", 3.0, 2)
 
 main()

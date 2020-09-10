@@ -15,15 +15,10 @@ class Course:
         """
         Init function for Course Class.
         """
-        try:
-            int(number)
-            isinstance(name, str)
-            isinstance(credit_hr, float)
-            isinstance(grade, float)
-        except ValueError:
-            raise ValueError("Incorrect value used for parameters")
-        except TypeError:
-            raise TypeError("Incorrect type used for parameters")
+        if not isinstance(number, int): raise TypeError
+        if not isinstance(name, str): raise TypeError
+        if not isinstance(credit_hr, float): raise TypeError
+        if not isinstance(grade, float): raise TypeError
         self.coursenumber = number
         self.coursename = name
         self.coursecredit_hr = credit_hr
