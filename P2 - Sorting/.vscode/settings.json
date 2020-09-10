@@ -1,0 +1,3 @@
+{
+    "python.linting.pylintPath": "/Library/Frameworks/Python.framework/Versions/3.8/bin/pylint"
+}
