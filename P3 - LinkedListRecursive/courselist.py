@@ -79,8 +79,7 @@ class CourseList():
         Calculates GPA based on grade attribute stored in Course Node class.
         Might need to be weighted not sure.
         """
-        if self.size() == 0:
-            return 0.0
+        if self.size() == 0: return 0.0
         grade_point_total = self.traverse_recursive_gpa_helper(self.head, 0.0)
         return grade_point_total / self.size()
 
@@ -89,7 +88,8 @@ class CourseList():
         Boolean return value recursively searches through and if sorted returns true.
         Else returns False.
         """
-        return
+        if self.head == None: return True
+        return self.traverse_recursive_sorted_helper(self.head.next, self.head.number())
     
     def __str__(self):
         return
@@ -108,6 +108,8 @@ class CourseList():
         itr = self.itr
         self.itr += 1
         return itr
+
+#------ START Recursive Helper Methods -------#
 
     def traverse_recursive_find_helper(self, course, target):
         """
@@ -129,6 +131,15 @@ class CourseList():
         grade_point_total += course.grade()
         return self.traverse_recursive_gpa_helper(course.next, grade_point_total)
 
+    def traverse_recursive_sorted_helper(self, course, last_course_num):
+        """
+        Traverses list recursively and validates classes are in order.
+        Returns True if Sorted False if Unsorted
+        """
+        if course == None: return True
+        if course.number() < last_course_num: return False
+        return self.traverse_recursive_sorted_helper(course.next, course.number())
+
     def insert_recursive_helper(self, node, course):
         """
         Recursively inserts node
@@ -148,34 +159,38 @@ class CourseList():
             return
         self.insert_recursive_helper(node.next, course)
 
+#------ END Recursive Helper Methods ------#
+#------- END Courselist Class Definition -----#
 
 def main():
     courselist = CourseList()
     print(str(courselist.calculate_gpa()))
-    course = Course(230, "cs 230", 2.0, 2.0)
+    course = Course(230, "Data Structures", 2.0, 2.0)
     courselist.insert(course)
     print(str(courselist.calculate_gpa()))
-    course = Course(240, "cs 230", 4.0, 4.0)
+    course = Course(240, "Discrete Math", 4.0, 4.0)
     courselist.insert(course)
     print(str(courselist.calculate_gpa()))
-    course = Course(245, "cs 230", 3.2, 3.2)
+    course = Course(245, "Hardwre", 3.2, 3.2)
     courselist.insert(course)
     print(str(courselist.calculate_gpa()))
-    course = Course(300, "cs 230", 1.5, 1.5)
+    course = Course(300, "Linux", 1.5, 1.5)
     courselist.insert(course)
     print(str(courselist.calculate_gpa()))
-    course = Course(200, "cs 230", 3.3, 3.3)
+    course = Course(200, "Intro to Circuits", 3.3, 3.3)
     courselist.insert(course)
     print(str(courselist.calculate_gpa()))
-    course = Course(225, "cs 230", 3.8, 3.8)
+    course = Course(225, "Research Lab", 3.8, 3.8)
     courselist.insert(course)
     print(str(courselist.calculate_gpa()))
-    course = Course(400, "cs 230", 1.2, 1.2)
+    course = Course(400, "Advanced Algorithms", 1.2, 1.2)
     courselist.insert(course)
     print(str(courselist.calculate_gpa()))
-    course = Course(350, "cs 230", 3.0, 3.0)
+    course = Course(350, "Mobile Development", 3.0, 3.0)
     courselist.insert(course)
     print(str(courselist.calculate_gpa()))
+
+    print(str(courselist.is_sorted()))
 
     """print(str(courselist.find(230)))
     print(str(courselist.find(245)))
