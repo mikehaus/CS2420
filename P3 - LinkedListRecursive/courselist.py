@@ -52,8 +52,10 @@ class CourseList():
         iterates through list. If found returns course number else returns
         -1
         """
-        if self.head == None: return -1
-        if self.head.number() == number: return number
+        if self.head == None: 
+            return -1
+        if self.head.number() == number: 
+            return number
         return self.traverse_recursive_find_helper(self.head, number)
 
     def size(self):
@@ -79,7 +81,8 @@ class CourseList():
         Calculates GPA based on grade attribute stored in Course Node class.
         Might need to be weighted not sure.
         """
-        if self.size() == 0: return 0.0
+        if self.size() == 0: 
+            return 0.0
         grade_point_total = self.traverse_recursive_gpa_helper(self.head, 0.0)
         return grade_point_total / self.size()
 
@@ -88,7 +91,8 @@ class CourseList():
         Boolean return value recursively searches through and if sorted returns true.
         Else returns False.
         """
-        if self.head == None: return True
+        if self.head == None: 
+            return True
         return self.traverse_recursive_sorted_helper(self.head.next, self.head.number())
     
     def __str__(self):
@@ -117,7 +121,8 @@ class CourseList():
         Traverses recursively through list and concatentates
         all Course str functions into a single string.
         """
-        if course == None: return course_string
+        if course == None: 
+            return course_string
         course_string += str(course)
         return self.traverse_recursive_string_helper(course.next, course_string)
 
@@ -128,8 +133,10 @@ class CourseList():
         matches with number value. Returns course number if found 
         and if not found, returns Null
         """
-        if course == None: return -1
-        if course.number() == target: return target
+        if course == None: 
+            return -1
+        if course.number() == target: 
+            return target
         return self.traverse_recursive(course.next, target)
 
     def traverse_recursive_gpa_helper(self, course, grade_point_total):
@@ -138,7 +145,8 @@ class CourseList():
         matches with number value. Returns Node and if not found, returns
         Null
         """
-        if course == None: return grade_point_total
+        if course == None: 
+            return grade_point_total
         grade_point_total += course.grade()
         return self.traverse_recursive_gpa_helper(course.next, grade_point_total)
 
@@ -147,8 +155,10 @@ class CourseList():
         Traverses list recursively and validates classes are in order.
         Returns True if Sorted False if Unsorted
         """
-        if course == None: return True
-        if course.number() < last_course_num: return False
+        if course == None: 
+            return True
+        if course.number() < last_course_num: 
+            return False
         return self.traverse_recursive_sorted_helper(course.next, course.number())
 
     def insert_recursive_helper(self, node, course):

@@ -22,10 +22,14 @@ class Course:
         """
         Init function for Course Class.
         """
-        if not isinstance(number, int): raise TypeError
-        if not isinstance(name, str): raise TypeError
-        if not isinstance(credit_hr, float): raise TypeError
-        if not isinstance(grade, float): raise TypeError
+        if not isinstance(number, int): 
+            raise TypeError
+        if not isinstance(name, str): 
+            raise TypeError
+        if not isinstance(credit_hr, float): 
+            raise TypeError
+        if not isinstance(grade, float): 
+            raise TypeError
         self.coursenumber = number
         self.coursename = name
         self.coursecredit_hr = credit_hr
@@ -51,6 +55,7 @@ class Course:
 
     def __str__(self):
         """returns formatted string as req'd by output"""
-        return 'cs {self.coursenumber} {self.coursename} Grade: {self.coursegrade} Credit Hours: {self.coursecredit_hr}\n'.format(self = self)
+        return 'cs {self.coursenumber} {self.coursename} Grade: {self.coursegrade} \
+          Credit Hours: {self.coursecredit_hr}\n'.format(self = self)
 
 #-------- END Course Class Definition -------#
