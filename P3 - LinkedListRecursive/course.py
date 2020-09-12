@@ -1,4 +1,5 @@
 """
+Course Class Declaration
 CS2420 - P3 Recursive Linked List
 course.py
 Mike Hollingshaus
@@ -22,13 +23,13 @@ class Course:
         """
         Init function for Course Class.
         """
-        if not isinstance(number, int): 
+        if not isinstance(number, int):
             raise TypeError
-        if not isinstance(name, str): 
+        if not isinstance(name, str):
             raise TypeError
-        if not isinstance(credit_hr, float): 
+        if not isinstance(credit_hr, float):
             raise TypeError
-        if not isinstance(grade, float): 
+        if not isinstance(grade, float):
             raise TypeError
         self.coursenumber = number
         self.coursename = name

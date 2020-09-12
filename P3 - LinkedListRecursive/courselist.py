@@ -20,6 +20,7 @@ class CourseList():
         """
         self.head = None
         self.listsize = 0
+        self.itr = 0
 
     def insert(self, course):
         """
@@ -29,24 +30,20 @@ class CourseList():
             self.head = course
             self.size_increment()
             return
-        return self.insert_recursive_helper(self.head, course)
+        self.insert_recursive_helper(self.head, course)
 
     def remove(self, number):
         """
         Removes first occurance of course with
         course number number
         """
-        if self.head is None:
-            return
-        return self.remove_recursive_helper(self.head, number)
+        self.remove_recursive_helper(self.head, number, 'first')
 
     def remove_all(self, number):
         """
-        Sets head to equal NULL which will get rid of all data in list.
+        Removes all courses with course number number.
         """
-        self.head = None
-        self.listsize = 0
-        return
+        self.remove_recursive_helper(self.head, number, 'all')
 
     def find(self, number):
         """
@@ -138,7 +135,7 @@ class CourseList():
             return -1
         if course.number() == target:
             return target
-        return self.traverse_recursive(course.next, target)
+        return self.traverse_recursive_find_helper(course.next, target)
 
     def traverse_recursive_gpa_helper(self, course, grade_point_total):
         """
@@ -169,7 +166,7 @@ class CourseList():
         if course.number() < node.number():
             course.next = node
             course.prev = node.prev
-            if course.prev != None:
+            if course.prev is not None:
                 course.prev.next = course
             node.prev = course
             if node == self.head:
@@ -183,23 +180,29 @@ class CourseList():
             return
         self.insert_recursive_helper(node.next, course)
 
-    def remove_recursive_helper(self, node, course_num):
+    def remove_recursive_helper(self, node, course_num, case):
         """
         Recursive function that removes node Course from list if
         course_num matches node.number (coursenumber)
+        case param is to tell whether we are removing first or all instances
         """
         if node is None:
             return
         if node.number() == course_num:
             node.prev.next = node.next
             node.next.prev = node.prev
-            return
-        return self.remove_recursive_helper(node.next, course_num)
+            self.size_decrement()
+            if case == 'first':
+                return
+        self.remove_recursive_helper(node.next, course_num, case)
 
 #------ END Recursive Helper Methods ------#
 #------- END Courselist Class Definition -----#
 
 def main():
+    """
+    main function primarily for testing
+    """
     courselist = CourseList()
     #print(str(courselist.calculate_gpa()))
     course = Course(230, "Data Structures", 2.0, 2.0)
