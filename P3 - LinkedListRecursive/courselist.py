@@ -179,7 +179,7 @@ class CourseList():
             course.prev = node
             self.size_increment()
             return
-        self.insert_recursive_helper(node.next, course)
+        return self.insert_recursive_helper(node.next, course)
 
     def remove_recursive_helper(self, node, course_num, case):
         """

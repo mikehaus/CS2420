@@ -31,32 +31,34 @@ class Course:
             raise TypeError
         if not isinstance(grade, float):
             raise TypeError
-        self.coursenumber = number
-        self.coursename = name
-        self.coursecredit_hr = credit_hr
-        self.coursegrade = grade
+        self.number = number
+        self.name = name
+        self.credit_hr = credit_hr
+        self.grade = grade
         self.next = None
         self.prev = None
 
     def number(self):
         """returns attr course number"""
-        return self.coursenumber
+        return self.number
 
     def name(self):
         """returns attr course name"""
-        return self.coursename
+        return self.name
 
     def credit_hr(self):
         """returns attr credit hours"""
-        return self.coursecredit_hr
+        return self.credit_hr
 
     def grade(self):
         """returns attr grade"""
-        return self.coursegrade
+        return self.grade
 
     def __str__(self):
         """returns formatted string as req'd by output"""
-        return 'cs {self.coursenumber} {self.coursename} Grade: {self.coursegrade} \
-          Credit Hours: {self.coursecredit_hr}\n'.format(self = self)
+        return 'cs {self.number} {self.name} Grade: {self.grade} \
+          Credit Hours: {self.credit_hr}\n'.format(self = self)
+
+    
 
 #-------- END Course Class Definition -------#
