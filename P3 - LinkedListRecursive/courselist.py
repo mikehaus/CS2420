@@ -20,7 +20,6 @@ class CourseList():
         CourseList Constructor
         """
         self.head = None
-        #self.listsize = 0
         self.itr = None
 
     def insert(self, course):
@@ -73,8 +72,8 @@ class CourseList():
         """
         if self.size() == 0:
             return 0.0
-        grade_point_total = self.traverse_recursive_gpa_helper(self.head, 0.0)
-        return grade_point_total / float(self.size())
+        grade_point_total_array = self.traverse_recursive_gpa_helper(self.head, 0.0, 0.0)
+        return grade_point_total_array[0] / grade_point_total_array[1]
 
     def is_sorted(self):
         """
@@ -131,7 +130,7 @@ class CourseList():
             return course
         return self.traverse_recursive_find_helper(course.next, target)
 
-    def traverse_recursive_gpa_helper(self, course, grade_point_total):
+    def traverse_recursive_gpa_helper(self, course, grade_point_total, credit_hr_total):
         """
         Traverses list recursively and returns Course Node that
         matches with number value. Returns Node and if not found, returns
@@ -139,9 +138,10 @@ class CourseList():
         """
         RecursionCounter()
         if course is None:
-            return grade_point_total
-        grade_point_total += course.grade()
-        return self.traverse_recursive_gpa_helper(course.next, grade_point_total)
+            return [grade_point_total, credit_hr_total]
+        grade_point_total += (course.grade() * course.credit_hr())
+        credit_hr_total += course.credit_hr()
+        return self.traverse_recursive_gpa_helper(course.next, grade_point_total, credit_hr_total)
 
     def traverse_recursive_sorted_helper(self, course, last_course_num):
         """
