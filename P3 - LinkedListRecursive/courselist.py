@@ -27,8 +27,8 @@ class CourseList():
         Inserts course Course into list in ascending course number order
         """
         if self.size() == 0:
-            self.itr = self.head
             self.head = course
+            self.itr = course
             return
         self.insert_recursive_helper(self.head, course)
 
@@ -99,7 +99,7 @@ class CourseList():
         """
         Increments the iterator attr for CourseList.
         """
-        if self.itr.next == None:
+        if self.itr is None:
             raise StopIteration
         self.itr = self.itr.next
         return self.itr
