@@ -30,7 +30,6 @@ class CourseList():
         if self.size() == 0:
             self.itr = self.head
             self.head = course
-            #self.size_increment()
             return
         self.insert_recursive_helper(self.head, course)
 
@@ -66,14 +65,6 @@ class CourseList():
         if self.head is None:
             return 0
         return self.size_recursive_helper(self.head, 0)
-
-    """def size_increment(self):
-        Increments list size.
-        self.listsize += 1"""
-
-    """def size_decrement(self):
-        Decrements List Size.
-        self.listsize -= 1"""
 
     def calculate_gpa(self):
         """
@@ -178,12 +169,10 @@ class CourseList():
             if node == self.head:
                 self.head = course
                 self.itr = course
-            #self.size_increment()
             return
         if node.next is None:
             node.next = course
             course.prev = node
-            #self.size_increment()
             return
         return self.insert_recursive_helper(node.next, course)
 
@@ -199,7 +188,6 @@ class CourseList():
         if node.number() == course_num:
             node.prev.next = node.next
             node.next.prev = node.prev
-            #self.size_decrement()
             if case == 'first':
                 return
         self.remove_recursive_helper(node.next, course_num, case)
