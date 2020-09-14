@@ -19,41 +19,42 @@ class Course:
     credit_hr - Course Credit Hours as float
     grade - Grade as float
     """
-    def __init__(self, number=0, name='', credit_hr=0.0, grade=0.0):
+    def __init__(self, number = 0, name = "", credit_hr = 0.0, grade = 0.0):
         """
         Init function for Course Class.
         """
         if not isinstance(number, int):
-            raise TypeError
+            raise ValueError
         if not isinstance(name, str):
-            raise TypeError
+            raise ValueError
         if not isinstance(credit_hr, float):
-            raise TypeError
+            raise ValueError
         if not isinstance(grade, float):
-            raise TypeError
-        self.number = number
-        self.name = name
-        self.credit_hr = credit_hr
-        self.grade = grade
+            raise ValueError
+        self._name = name
+        self._number = number
+        self._credit_hr = credit_hr
+        self._grade = grade
         self.next = None
         self.prev = None
 
-    def _number(self):
+    def number(self):
         """returns attr course number"""
-        return self.number
+        return self._number
 
-    def _name(self):
+    def name(self):
         """returns attr course name"""
-        return self.name
+        return self._name
 
-    def _credit_hr(self):
+    def credit_hr(self):
         """returns attr credit hours"""
-        return self.credit_hr
+        return self._credit_hr
 
-    def _grade(self):
+    def grade(self):
         """returns attr grade"""
-        return self.grade
+        return self._grade
 
+    
     def __str__(self):
         """returns formatted string as req'd by output"""
         return 'cs {self.number} {self.name} Grade: {self.grade} \

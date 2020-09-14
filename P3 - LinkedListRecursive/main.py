@@ -5,15 +5,6 @@ def main():
     """
     main function primarily for testing
     """
-    cl = CourseList()
-    cl.insert(Course(1000))
-    for _ in range(20):
-        cl.insert(Course(1200))
-    totalCourses = 0
-    for _ in cl:
-        totalCourses += 1
-    print(str(cl.listsize))
-    
     """courselist = CourseList()
     #print(str(courselist.calculate_gpa()))
     course = Course()
