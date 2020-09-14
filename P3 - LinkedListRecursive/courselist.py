@@ -21,7 +21,7 @@ class CourseList():
         """
         self.head = None
         self.listsize = 0
-        self.itr = 0
+        self.itr = self.head
 
     def insert(self, course):
         """
@@ -103,15 +103,15 @@ class CourseList():
         """
         Creates iterator for List and returns self.
         """
-        self.itr = 0
         return self
 
     def __next__(self):
         """
         Increments the iterator attr for CourseList.
         """
-        itr = self.itr
-        self.itr += 1
+        if self.itr.next == None:
+            raise StopIteration
+        self.itr = self.itr.next
         return itr
 
 #------ START Recursive Helper Methods -------#
@@ -164,7 +164,7 @@ class CourseList():
         """
         Recursively inserts node
         """
-        if course.number() < node.number():
+        if course._number() < node._number():
             course.next = node
             course.prev = node.prev
             if course.prev is not None:
@@ -189,7 +189,7 @@ class CourseList():
         """
         if node is None:
             return
-        if node.number() == course_num:
+        if node._number() == course_num:
             node.prev.next = node.next
             node.next.prev = node.prev
             self.size_decrement()
