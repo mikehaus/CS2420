@@ -25,11 +25,17 @@ class Course:
         """
         if not isinstance(number, int):
             raise ValueError
+        if number < 0:
+            raise ValueError
         if not isinstance(name, str):
             raise ValueError
         if not isinstance(credit_hr, float):
             raise ValueError
+        if credit_hr < 0:
+            raise ValueError
         if not isinstance(grade, float):
+            raise ValueError
+        if grade < 0:
             raise ValueError
         self._name = name
         self._number = number

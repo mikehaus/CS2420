@@ -20,7 +20,7 @@ class CourseList():
         CourseList Constructor
         """
         self.head = None
-        self.listsize = 0
+        #self.listsize = 0
         self.itr = None
 
     def insert(self, course):
@@ -30,7 +30,7 @@ class CourseList():
         if self.size() == 0:
             self.itr = self.head
             self.head = course
-            self.size_increment()
+            #self.size_increment()
             return
         self.insert_recursive_helper(self.head, course)
 
@@ -63,19 +63,17 @@ class CourseList():
         """
         Returns list size.
         """
-        return self.listsize
+        if self.head is None:
+            return 0
+        return self.size_recursive_helper(self.head, 0)
 
-    def size_increment(self):
-        """
+    """def size_increment(self):
         Increments list size.
-        """
-        self.listsize += 1
+        self.listsize += 1"""
 
-    def size_decrement(self):
-        """
+    """def size_decrement(self):
         Decrements List Size.
-        """
-        self.listsize -= 1
+        self.listsize -= 1"""
 
     def calculate_gpa(self):
         """
@@ -84,8 +82,8 @@ class CourseList():
         """
         if self.size() == 0:
             return 0.0
-        grade_point_total_array = self.traverse_recursive_gpa_helper(self.head, 0.0, 0.0)
-        return grade_point_total_array[0] / grade_point_total_array[1]
+        grade_point_total = self.traverse_recursive_gpa_helper(self.head, 0.0)
+        return grade_point_total / float(self.size())
 
     def is_sorted(self):
         """
@@ -123,6 +121,7 @@ class CourseList():
         Traverses recursively through list and concatentates
         all Course str functions into a single string.
         """
+        RecursionCounter()
         if course is None:
             return course_string
         course_string += str(course)
@@ -134,29 +133,31 @@ class CourseList():
         matches with number value. Returns course number if found
         and if not found, returns Null
         """
+        RecursionCounter()
         if course is None:
             return -1
         if course.number() == target:
-            return target
+            return course
         return self.traverse_recursive_find_helper(course.next, target)
 
-    def traverse_recursive_gpa_helper(self, course, grade_point_total, credit_total):
+    def traverse_recursive_gpa_helper(self, course, grade_point_total):
         """
         Traverses list recursively and returns Course Node that
         matches with number value. Returns Node and if not found, returns
         Null
         """
+        RecursionCounter()
         if course is None:
-            return [grade_point_total, credit_total]
+            return grade_point_total
         grade_point_total += course.grade()
-        credit_total += course.credit_hr()
-        return self.traverse_recursive_gpa_helper(course.next, grade_point_total, credit_total)
+        return self.traverse_recursive_gpa_helper(course.next, grade_point_total)
 
     def traverse_recursive_sorted_helper(self, course, last_course_num):
         """
         Traverses list recursively and validates classes are in order.
         Returns True if Sorted False if Unsorted
         """
+        RecursionCounter()
         if course is None:
             return True
         if course.number() < last_course_num:
@@ -167,6 +168,7 @@ class CourseList():
         """
         Recursively inserts node
         """
+        RecursionCounter()
         if course.number() < node.number():
             course.next = node
             course.prev = node.prev
@@ -176,12 +178,12 @@ class CourseList():
             if node == self.head:
                 self.head = course
                 self.itr = course
-            self.size_increment()
+            #self.size_increment()
             return
         if node.next is None:
             node.next = course
             course.prev = node
-            self.size_increment()
+            #self.size_increment()
             return
         return self.insert_recursive_helper(node.next, course)
 
@@ -191,15 +193,27 @@ class CourseList():
         course_num matches node.number (coursenumber)
         case param is to tell whether we are removing first or all instances
         """
+        RecursionCounter()
         if node is None:
             return
         if node.number() == course_num:
             node.prev.next = node.next
             node.next.prev = node.prev
-            self.size_decrement()
+            #self.size_decrement()
             if case == 'first':
                 return
         self.remove_recursive_helper(node.next, course_num, case)
+
+    def size_recursive_helper(self, node, size):
+        """
+        Recursive helper function to return the size of the list
+        based on how many nodes there are.
+        """
+        RecursionCounter()
+        if node is None:
+            return size
+        size += 1
+        return self.size_recursive_helper(node.next, size)
 
 #------ END Recursive Helper Methods ------#
 #------- END Courselist Class Definition -----#
