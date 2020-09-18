@@ -1,10 +1,49 @@
+import sys
 from course import Course
 from courselist import CourseList
 
+"""
+Main driver file for 
+Project 3 2420
+Mike Hollingshaus
+"""
+
+def line_parse(line):
+    """
+    Parse an individual line for charachers 
+    and append them to returned line
+    """
+    parsed_course = line.split(',', 4)
+    return parsed_course
+
+def parser(file, course_list):
+    """
+    Parse text of filepath file
+    """
+    courseData = []
+    filelines = file.readlines()
+    for line in filelines:
+        courseData = []
+        lineparsed = line_parse(line)
+        for part in lineparsed:
+            courseData.append(part)
+            print(part)
+        course = Course(int(courseData[0]), courseData[1], float(courseData[2]), float(courseData[3]))
+        course_list.insert(course)
+
+    return course_list
+
 def main():
     """
-    main function primarily for testing
+    main function driver for reading in file and then
+    processing input.
+    NOTE: I have my own test code commented out below
     """
+    course_list = CourseList()
+    file = open('data.txt', 'r')
+    course_list = parser(file, course_list)    
+
+
     """courselist = CourseList()
     #print(str(courselist.calculate_gpa()))
     course = Course()
@@ -39,7 +78,7 @@ def main():
     print(courselist.__str__())
     print(" ")
     courselist.remove(240)
-    print(courselist.__str__())
+print(courselist.__str__())
     course = Course(226, "Hardware AGAIN", 3.5, 3.5)
     courselist.insert(course)
     print(courselist.__str__())"""

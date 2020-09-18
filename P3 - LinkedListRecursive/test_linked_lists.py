@@ -7,6 +7,8 @@ from recursioncounter import RecursionCounter
 import io
 import sys
 
+"""Unit Test Module Provided by Instructor"""
+
 class TestEmptyCourse(unittest.TestCase):
     def test_course_creation(self):
         # make sure that an empty course is correct

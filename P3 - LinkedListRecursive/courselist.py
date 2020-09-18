@@ -111,7 +111,7 @@ class CourseList():
         Traverses recursively through list and concatentates
         all Course str functions into a single string.
         """
-        RecursionCounter()
+        _ = RecursionCounter()
         if course is None:
             return course_string
         course_string += str(course)
@@ -123,7 +123,7 @@ class CourseList():
         matches with number value. Returns course number if found
         and if not found, returns Null
         """
-        RecursionCounter()
+        _ = RecursionCounter()
         if course is None:
             return -1
         if course.number() == target:
@@ -136,7 +136,7 @@ class CourseList():
         matches with number value. Returns Node and if not found, returns
         Null
         """
-        RecursionCounter()
+        _ = RecursionCounter()
         if course is None:
             return [grade_point_total, credit_hr_total]
         grade_point_total += (course.grade() * course.credit_hr())
@@ -148,7 +148,7 @@ class CourseList():
         Traverses list recursively and validates classes are in order.
         Returns True if Sorted False if Unsorted
         """
-        RecursionCounter()
+        _ = RecursionCounter()
         if course is None:
             return True
         if course.number() < last_course_num:
@@ -159,7 +159,7 @@ class CourseList():
         """
         Recursively inserts node
         """
-        RecursionCounter()
+        _ = RecursionCounter()
         if course.number() < node.number():
             course.next = node
             course.prev = node.prev
@@ -182,7 +182,7 @@ class CourseList():
         course_num matches node.number (coursenumber)
         case param is to tell whether we are removing first or all instances
         """
-        RecursionCounter()
+        _ = RecursionCounter()
         if node is None:
             return
         if node.number() == course_num:
@@ -197,7 +197,7 @@ class CourseList():
         Recursive helper function to return the size of the list
         based on how many nodes there are.
         """
-        RecursionCounter()
+        _ = RecursionCounter()
         if node is None:
             return size
         size += 1
