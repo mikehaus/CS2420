@@ -85,8 +85,13 @@ class CourseList():
         return self.traverse_recursive_sorted_helper(self.head.next, self.head.number())
 
     def __str__(self):
-        course_string = ''
-        return self.traverse_recursive_string_helper(self.head, course_string)
+        size = str(self.size())
+        course_string = 'Current List: (' + size + ')\n'
+        course_string = self.traverse_recursive_string_helper(self.head, course_string)
+        course_string += '\n\n\n\n'
+        gpa = round(self.calculate_gpa(), 3)
+        course_string += 'Cumulative GPA: ' + str(gpa)
+        return course_string
 
     def __iter__(self):
         """

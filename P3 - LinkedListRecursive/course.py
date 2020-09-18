@@ -63,7 +63,7 @@ class Course:
     
     def __str__(self):
         """returns formatted string as req'd by output"""
-        return 'cs {self.number} {self.name} Grade: {self.grade} \
-          Credit Hours: {self.credit_hr}\n'.format(self = self)
+        return ('cs{self._number} {self._name} Grade: {self._grade}' 
+          ' Credit Hours: {self._credit_hr}\n'.format(self = self))
 
 #-------- END Course Class Definition -------#
