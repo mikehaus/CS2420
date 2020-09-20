@@ -230,9 +230,9 @@ def main():
     """
     Main driver function. Sorts lists and times how long it takes.
     """
-    data_size = 25000
+    data_size = 2000
     random.seed(0)
-    data = random.sample(range(data_size * 3), k = data_size)
+    data = random.sample(range(data_size * 3), k = 200)
     test_insertion = data.copy()
     test_selection = data.copy()
     test_merge = data.copy()
