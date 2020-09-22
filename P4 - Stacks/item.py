@@ -12,12 +12,12 @@ class Item():
     Class definition of Item (Node).
     """
 
-    def __init__(self, data, next_item):
+    def __init__(self, data):
         """
         Item class constructor.
         """
         self._data = data
-        self._next = next_item
+        self._next = None
 
     def data(self):
         """
