@@ -25,8 +25,7 @@ class Stack():
             self._top = item
             self._size += 1
             return
-        
-        item.next = self._top
+        item._next = self._top
         self._top = item
         self._size += 1
         return
@@ -40,7 +39,10 @@ class Stack():
         if self._top is None:
             raise IndexError('OUT OF BOUNDS: Stack is Empty')
             return
+        current_top = self._top
         self._top = self._top._next
+        self._size -= 1
+        return current_top
 
     def top(self):
         """
@@ -66,5 +68,6 @@ class Stack():
             return
         for itr in range(0, self._size):
             self.pop()
+        self._size = 0
 
 ########## -- END STACK CLASS DEFINITION -- ##########
