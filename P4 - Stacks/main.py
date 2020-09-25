@@ -3,37 +3,40 @@ Main driver file for Stacks project
 CS2420 P4
 Mike Hollingshaus
 """
-import sys
-import re
 from stack import Stack
 from item import Item
 
-operators = '+-/*'
-parenthesis = '()'
-priority = {
+########## ---------- BEGIN MAIN FILE ---------- ##########
+
+OPERATORS = '+-/*'
+PARENTHESIS = '()'
+PRIORITY = {
     '+': 0,
     '-': 0,
     '*': 1,
     '/': 1
 }
 
-def determine_greater_operator_priority(op1, top):
+def determine_lesser_operator_priority(op1, top):
+    """
+    Function specifically to show priority of two
+    operator arguments. Returns true if op1 is
+    less than or equal to top.
+    """
     try:
-        op1prio = priority[op1]
-        op2prio = priority[top]
-        if op1prio <= op2prio:
-            return True
-        else:
-            return False
+        op1prio = PRIORITY[op1]
+        op2prio = PRIORITY[top]
+        return bool(op1prio <= op2prio)
     except KeyError:
         return False
 
-    return priority[op1] >= priority[op2]
-
-def process_line(stack):
-    #if stack.size() != 0:
-        #stack.clear()
-    return
+def eval_postfix(expr):
+    """
+    Takes string postfix expression and evaluates
+    then returns result as number. If expression is
+    not valid, raise a SyntaxError.
+    """
+    return expr
 
 def in2post(expr):
     """
@@ -43,7 +46,6 @@ def in2post(expr):
     a ValueError.
     """
     stack = Stack()
-    last_operator = ''
     postfix_expression = ''
     for char in expr:
         if char == '(':
@@ -55,20 +57,22 @@ def in2post(expr):
             continue
         elif char == '\n':
             while stack.size() > 0:
-                popped = stack.pop()._data
+                popped = stack.pop().data()
                 postfix_expression += ' ' + popped
             continue
         elif char == ')':
             while (stack.size() != 0 and char != '('):
-                char = stack.pop()._data
+                char = stack.pop().data()
                 if char == '(':
                     break
                 postfix_expression += ' ' + char
             if (stack.size() > 0 and char != '('):
                 return postfix_expression
         else:
-            while (stack.size() != 0 and determine_greater_operator_priority(char, stack.top()._data)):
-                popped = stack.pop()._data
+            while (stack.size() != 0 and determine_lesser_operator_priority(
+                                                                        char,
+                                                                        stack.top().data())):
+                popped = stack.pop().data()
                 if popped == '(':
                     break
                 postfix_expression += ' ' + popped
@@ -87,11 +91,15 @@ def parse_file(file):
         infix_string = infix_string[:-1]
         print(infix_string)
         in2post(line)
-        char = file.read(1)
 
 def main():
+    """
+    Main Function. Opens file, reads it,
+    then lets functions do the work.
+    """
     data = open('data.txt', 'r')
     parse_file(data)
-    return 
 
 main()
+
+########## ---------- END MAIN FILE ---------- ##########
