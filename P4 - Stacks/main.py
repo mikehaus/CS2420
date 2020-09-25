@@ -17,10 +17,20 @@ priority = {
     '/': 1
 }
 
-def determine_operator_priority(op1, op2):
+def determine_greater_operator_priority(op1, top):
+    try:
+        op1prio = priority[op1]
+        op2prio = priority[top]
+        if op1prio <= op2prio:
+            return True
+        else:
+            return False
+    except KeyError:
+        return False
+
     return priority[op1] >= priority[op2]
 
-def process_line(stack, infix_string):
+def process_line(stack):
     #if stack.size() != 0:
         #stack.clear()
     return
@@ -34,53 +44,36 @@ def in2post(expr):
     """
     stack = Stack()
     last_operator = ''
-    infix_string = 'infix: '
-    postfix_expression = 'postfix: '
-    left_parenthesis_count = 0
+    postfix_expression = ''
     for char in expr:
         if char == '(':
             stack.push(Item(char))
-            left_parenthesis_count += 1
-            infix_string += char
         elif char.isnumeric():
-            stack.push(Item(char))
-            postfix_expression += char + ' '
-            infix_string += char
+            postfix_expression += ' ' + char
             continue
         elif char == ' ':
-            infix_string += char
             continue
         elif char == '\n':
-            postfix_expression += last_operator
-            process_line(stack, infix_string)
+            while stack.size() > 0:
+                popped = stack.pop()._data
+                postfix_expression += ' ' + popped
             continue
-        elif (char == '+' or char == '-' or char == '*' or char == '/'):
-            infix_string += char
-            if last_operator == '':
-                last_operator = char
-                continue
-            if (stack.size() > 0 and stack.top()._data != '(' and left_parenthesis_count <= 1):
-                if last_operator != '':
-                    if determine_operator_priority(char, last_operator):
-                        postfix_expression += char + ' '
-                        last_operator = ''
-                    elif (not determine_operator_priority(char, last_operator) and left_parenthesis_count < 1):
-                        postfix_expression += last_operator + ' '
-                        last_operator = char
-                    elif(not determine_operator_priority(char, last_operator) and left_parenthesis_count >= 1):
-                        postfix_expression += last_operator + ' ' + char
-                        last_operator = ''
-                temp_op = stack.pop()
+        elif char == ')':
+            while (stack.size() != 0 and char != '('):
+                char = stack.pop()._data
+                if char == '(':
+                    break
+                postfix_expression += ' ' + char
+            if (stack.size() > 0 and char != '('):
+                return postfix_expression
+        else:
+            while (stack.size() != 0 and determine_greater_operator_priority(char, stack.top()._data)):
+                popped = stack.pop()._data
+                if popped == '(':
+                    break
+                postfix_expression += ' ' + popped
             stack.push(Item(char))
-        else: 
-            infix_string += char
-            while stack.top()._data != '(':
-                temp_op = stack.pop()
-                if temp_op._data == '(':
-                    left_parenthesis_count -= 1
-                if last_operator != '':
-                    postfix_expression += last_operator
-                    last_operator = ''
+    print('postfix:' + postfix_expression + '\n')
     return postfix_expression
 
 def parse_file(file):
@@ -90,6 +83,9 @@ def parse_file(file):
     infix_string = ''
     filelines = file.readlines()
     for line in filelines:
+        infix_string = 'infix: ' + line
+        infix_string = infix_string[:-1]
+        print(infix_string)
         in2post(line)
         char = file.read(1)
 
