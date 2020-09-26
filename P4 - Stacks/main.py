@@ -8,24 +8,24 @@ from item import Item
 
 ########## ---------- BEGIN MAIN FILE ---------- ##########
 
-OPERATORS = '+-/*'
-PARENTHESIS = '()'
-PRIORITY = {
-    '+': 0,
-    '-': 0,
-    '*': 1,
-    '/': 1
-}
-
 def determine_lesser_operator_priority(op1, top):
     """
     Function specifically to show priority of two
     operator arguments. Returns true if op1 is
     less than or equal to top.
     """
+    operators = '+-/*'
+    parenthesis = '()'
+    priority = {
+        '+': 0,
+        '-': 0,
+        '*': 1,
+        '/': 1
+    }
+
     try:
-        op1prio = PRIORITY[op1]
-        op2prio = PRIORITY[top]
+        op1prio = priority[op1]
+        op2prio = priority[top]
         return bool(op1prio <= op2prio)
     except KeyError:
         return False
@@ -36,7 +36,24 @@ def eval_postfix(expr):
     then returns result as number. If expression is
     not valid, raise a SyntaxError.
     """
-    return expr
+    stack = Stack()
+    for char in expr:
+
+        if char == ' ':
+            continue
+
+        if char.isnumeric():
+            stack.push(Item(char))
+
+        else:
+            if stack.size() == 1:
+                raise SyntaxError("Not a valid postfix expression")
+            operand_1 = stack.pop().data()
+            operand_2 = stack.pop().data()
+            stack.push(Item(str(float(eval(operand_2 + char + operand_1)))))
+
+    result = str(stack.pop().data())
+    return result
 
 def in2post(expr):
     """
@@ -47,20 +64,29 @@ def in2post(expr):
     """
     stack = Stack()
     postfix_expression = ''
+    left_paren_count = 0
+    right_paren_count = 0
     for char in expr:
+
         if char == '(':
+            left_paren_count += 1
             stack.push(Item(char))
+
         elif char.isnumeric():
             postfix_expression += ' ' + char
             continue
+
         elif char == ' ':
             continue
+
         elif char == '\n':
             while stack.size() > 0:
                 popped = stack.pop().data()
                 postfix_expression += ' ' + popped
             continue
+
         elif char == ')':
+            right_paren_count += 1
             while (stack.size() != 0 and char != '('):
                 char = stack.pop().data()
                 if char == '(':
@@ -68,6 +94,7 @@ def in2post(expr):
                 postfix_expression += ' ' + char
             if (stack.size() > 0 and char != '('):
                 return postfix_expression
+
         else:
             while (stack.size() != 0 and determine_lesser_operator_priority(
                                                                         char,
@@ -77,7 +104,10 @@ def in2post(expr):
                     break
                 postfix_expression += ' ' + popped
             stack.push(Item(char))
-    print('postfix:' + postfix_expression + '\n')
+
+    if left_paren_count != right_paren_count:
+        raise ValueError('Not a valid expression')
+    print('postfix:' + postfix_expression)
     return postfix_expression
 
 def parse_file(file):
@@ -90,7 +120,9 @@ def parse_file(file):
         infix_string = 'infix: ' + line
         infix_string = infix_string[:-1]
         print(infix_string)
-        in2post(line)
+        postfix_expr = in2post(line)
+        answer = eval_postfix(postfix_expr)
+        print('answer: ' + answer)
 
 def main():
     """
