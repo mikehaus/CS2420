@@ -68,21 +68,20 @@ def eval_postfix(expr):
         if char == ' ':
             continue
         if char.isnumeric():
-            stack.push(Item(char))
+            stack.push(char)
         else:
             if stack.size() == 1:
                 raise SyntaxError("Not a valid postfix expression")
             operand_1 = float(stack.pop().data())
             operand_2 = float(stack.pop().data())
             if char == '+':
-                stack.push(Item(operand_1 + operand_2))
+                stack.push(operand_1 + operand_2)
             elif char == '-':
-                stack.push(Item(operand_2 - operand_1))
+                stack.push(operand_2 - operand_1)
             elif char == '*':
-                stack.push(Item(operand_2 * operand_1))
+                stack.push(operand_2 * operand_1)
             elif char == '/':
-                stack.push(Item(operand_2 / operand_1))
-
+                stack.push(operand_2 / operand_1)
     result = stack.pop().data()
     return result
 
@@ -102,7 +101,7 @@ def in2post(expr):
     for char in expr:
         if char == '(':
             left_paren_count += 1
-            stack.push(Item(char))
+            stack.push(char)
         elif char.isnumeric():
             postfix_expression += ' ' + char
             continue
@@ -130,7 +129,7 @@ def in2post(expr):
                 if popped == '(':
                     break
                 postfix_expression += ' ' + popped
-            stack.push(Item(char))
+            stack.push(char)
     if left_paren_count != right_paren_count:
         raise SyntaxError('Not a valid expression')
     while stack.size() > 0:
@@ -152,13 +151,12 @@ def parse_file(file):
         print(infix_string)
         postfix_expr = in2post(line)
         answer = eval_postfix(postfix_expr)
-        print('answer: ' + str(answer) + '\n')
+        print('answer: ' + str(answer))
 
 def main():
     """
     Main Function. Opens file, reads it,
     then lets functions do the work.
-
     """
     data = open('data.txt', 'r')
     parse_file(data)

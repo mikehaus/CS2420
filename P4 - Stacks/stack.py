@@ -21,14 +21,13 @@ class Stack():
         """
         Adds Item (node) to the top of stack.
         """
-        if not isinstance(item, Item):
-            item = Item(item)
+        push_item = Item(item)
         if self._top is None:
-            self._top = item
+            self._top = push_item
             self._size += 1
             return
-        item._next = self.top()
-        self._top = item
+        push_item._next = self.top()
+        self._top = push_item
         self._size += 1
         return
 
