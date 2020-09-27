@@ -59,22 +59,16 @@ def eval_postfix(expr):
     """
     if expr is None:
         raise ValueError('None is not a postfix expression')
-
     elif not check_valid_postfix_expr(expr):
         raise SyntaxError('Expression input is not a valid postfix expression')
-
     elif not isinstance(expr, str):
         raise ValueError("Expression input is not of type string")
-
     stack = Stack()
     for char in expr:
-
         if char == ' ':
             continue
-
         if char.isnumeric():
             stack.push(Item(char))
-
         else:
             if stack.size() == 1:
                 raise SyntaxError("Not a valid postfix expression")

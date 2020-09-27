@@ -3,7 +3,6 @@ Implementation of Stack for
 CS2420 Project 4.
 Mike Hollingshaus
 """
-from item import Item
 
 ########## -- BEGIN STACK CLASS DEFINITION -- ##########
 
@@ -16,7 +15,7 @@ class Stack():
     def __init__(self):
         self._top = None
         self._size = 0
-    
+
     def push(self, item):
         """
         Adds Item (node) to the top of stack.
@@ -25,7 +24,7 @@ class Stack():
             self._top = item
             self._size += 1
             return
-        item._next = self._top
+        item._next = self.top()
         self._top = item
         self._size += 1
         return
@@ -38,7 +37,6 @@ class Stack():
         """
         if self._top is None:
             raise IndexError('OUT OF BOUNDS: Stack is Empty')
-            return
         current_top = self._top
         self._top = self._top._next
         self._size -= 1
