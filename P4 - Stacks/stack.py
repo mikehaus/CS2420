@@ -3,6 +3,7 @@ Implementation of Stack for
 CS2420 Project 4.
 Mike Hollingshaus
 """
+from item import Item
 
 ########## -- BEGIN STACK CLASS DEFINITION -- ##########
 
@@ -20,6 +21,8 @@ class Stack():
         """
         Adds Item (node) to the top of stack.
         """
+        if not isinstance(item, Item):
+            item = Item(item)
         if self._top is None:
             self._top = item
             self._size += 1
