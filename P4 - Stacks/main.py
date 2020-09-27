@@ -30,12 +30,42 @@ def determine_lesser_operator_priority(op1, top):
     except KeyError:
         return False
 
+def check_valid_postfix_expr(expr):
+    """
+    Special counter to determine if string is
+    a valid postfix expression or not. If char
+    is literal increment, if char is operator
+    decrement. If counter goes below 0, it's not
+    valid.
+    """
+    counter = 0
+    valid = True
+    for char in expr:
+        if char == ' ':
+            continue
+        if char.isnumeric():
+            counter += 1
+        elif ((char == '+') or (char == '-') or (char == '*') or (char == '/')):
+            counter -= 1
+        if counter < 0:
+            valid = False
+    return valid
+
 def eval_postfix(expr):
     """
     Takes string postfix expression and evaluates
     then returns result as number. If expression is
     not valid, raise a SyntaxError.
     """
+    if expr is None:
+        raise ValueError('None is not a postfix expression')
+
+    elif not check_valid_postfix_expr(expr):
+        raise SyntaxError('Expression input is not a valid postfix expression')
+
+    elif not isinstance(expr, str):
+        raise ValueError("Expression input is not of type string")
+
     stack = Stack()
     for char in expr:
 
@@ -48,11 +78,18 @@ def eval_postfix(expr):
         else:
             if stack.size() == 1:
                 raise SyntaxError("Not a valid postfix expression")
-            operand_1 = stack.pop().data()
-            operand_2 = stack.pop().data()
-            stack.push(Item(str(float(eval(operand_2 + char + operand_1)))))
+            operand_1 = float(stack.pop().data())
+            operand_2 = float(stack.pop().data())
+            if char == '+':
+                stack.push(Item(operand_1 + operand_2))
+            elif char == '-':
+                stack.push(Item(operand_2 - operand_1))
+            elif char == '*':
+                stack.push(Item(operand_2 * operand_1))
+            elif char == '/':
+                stack.push(Item(operand_2 / operand_1))
 
-    result = str(stack.pop().data())
+    result = stack.pop().data()
     return result
 
 def in2post(expr):
@@ -62,29 +99,26 @@ def in2post(expr):
     a SyntaxError. If parameter expr is not a string, raise
     a ValueError.
     """
+    if not isinstance(expr, str):
+        raise ValueError('Expression is not a string')
     stack = Stack()
     postfix_expression = ''
     left_paren_count = 0
     right_paren_count = 0
     for char in expr:
-
         if char == '(':
             left_paren_count += 1
             stack.push(Item(char))
-
         elif char.isnumeric():
             postfix_expression += ' ' + char
             continue
-
         elif char == ' ':
             continue
-
         elif char == '\n':
             while stack.size() > 0:
                 popped = stack.pop().data()
                 postfix_expression += ' ' + popped
             continue
-
         elif char == ')':
             right_paren_count += 1
             while (stack.size() != 0 and char != '('):
@@ -94,7 +128,6 @@ def in2post(expr):
                 postfix_expression += ' ' + char
             if (stack.size() > 0 and char != '('):
                 return postfix_expression
-
         else:
             while (stack.size() != 0 and determine_lesser_operator_priority(
                                                                         char,
@@ -104,9 +137,11 @@ def in2post(expr):
                     break
                 postfix_expression += ' ' + popped
             stack.push(Item(char))
-
     if left_paren_count != right_paren_count:
-        raise ValueError('Not a valid expression')
+        raise SyntaxError('Not a valid expression')
+    while stack.size() > 0:
+        popped = stack.pop().data()
+        postfix_expression += ' ' + popped 
     print('postfix:' + postfix_expression)
     return postfix_expression
 
@@ -118,20 +153,22 @@ def parse_file(file):
     filelines = file.readlines()
     for line in filelines:
         infix_string = 'infix: ' + line
-        infix_string = infix_string[:-1]
+        if infix_string[len(infix_string) - 1] == '\n':
+            infix_string = infix_string[:-1]
         print(infix_string)
         postfix_expr = in2post(line)
         answer = eval_postfix(postfix_expr)
-        print('answer: ' + answer)
+        print('answer: ' + str(answer) + '\n')
 
 def main():
     """
     Main Function. Opens file, reads it,
     then lets functions do the work.
+
     """
     data = open('data.txt', 'r')
     parse_file(data)
+    data.close()
 
 main()
-
 ########## ---------- END MAIN FILE ---------- ##########
