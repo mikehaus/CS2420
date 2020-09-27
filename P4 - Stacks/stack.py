@@ -42,7 +42,7 @@ class Stack():
         current_top = self._top
         self._top = self._top._next
         self._size -= 1
-        return current_top
+        return current_top.data()
 
     def top(self):
         """

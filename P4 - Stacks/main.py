@@ -25,7 +25,7 @@ def determine_lesser_operator_priority(op1, top):
 
     try:
         op1prio = priority[op1]
-        op2prio = priority[top]
+        op2prio = priority[top.data()]
         return bool(op1prio <= op2prio)
     except KeyError:
         return False
@@ -59,6 +59,8 @@ def eval_postfix(expr):
     """
     if expr is None:
         raise ValueError('None is not a postfix expression')
+    if not isinstance(expr, str):
+        raise ValueError('Expression is not a string')
     elif not check_valid_postfix_expr(expr):
         raise SyntaxError('Expression input is not a valid postfix expression')
     elif not isinstance(expr, str):
@@ -72,8 +74,8 @@ def eval_postfix(expr):
         else:
             if stack.size() == 1:
                 raise SyntaxError("Not a valid postfix expression")
-            operand_1 = float(stack.pop().data())
-            operand_2 = float(stack.pop().data())
+            operand_1 = float(stack.pop())
+            operand_2 = float(stack.pop())
             if char == '+':
                 stack.push(operand_1 + operand_2)
             elif char == '-':
@@ -82,8 +84,8 @@ def eval_postfix(expr):
                 stack.push(operand_2 * operand_1)
             elif char == '/':
                 stack.push(operand_2 / operand_1)
-    result = stack.pop().data()
-    return result
+    result = stack.pop()
+    return float(result)
 
 def in2post(expr):
     """
@@ -109,13 +111,13 @@ def in2post(expr):
             continue
         elif char == '\n':
             while stack.size() > 0:
-                popped = stack.pop().data()
+                popped = stack.pop()
                 postfix_expression += ' ' + popped
             continue
         elif char == ')':
             right_paren_count += 1
             while (stack.size() != 0 and char != '('):
-                char = stack.pop().data()
+                char = stack.pop()
                 if char == '(':
                     break
                 postfix_expression += ' ' + char
@@ -124,8 +126,8 @@ def in2post(expr):
         else:
             while (stack.size() != 0 and determine_lesser_operator_priority(
                                                                         char,
-                                                                        stack.top().data())):
-                popped = stack.pop().data()
+                                                                        stack.top())):
+                popped = stack.pop()
                 if popped == '(':
                     break
                 postfix_expression += ' ' + popped
@@ -133,7 +135,7 @@ def in2post(expr):
     if left_paren_count != right_paren_count:
         raise SyntaxError('Not a valid expression')
     while stack.size() > 0:
-        popped = stack.pop().data()
+        popped = stack.pop()
         postfix_expression += ' ' + popped 
     print('postfix:' + postfix_expression)
     return postfix_expression
