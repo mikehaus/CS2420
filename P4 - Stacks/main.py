@@ -3,8 +3,7 @@ Main driver file for Stacks project
 CS2420 P4
 Mike Hollingshaus
 """
-from stack import Stack
-from item import Item
+from stack import Stack, Item
 
 ########## ---------- BEGIN MAIN FILE ---------- ##########
 
@@ -25,7 +24,7 @@ def determine_lesser_operator_priority(op1, top):
 
     try:
         op1prio = priority[op1]
-        op2prio = priority[top.data()]
+        op2prio = priority[top]
         return bool(op1prio <= op2prio)
     except KeyError:
         return False
