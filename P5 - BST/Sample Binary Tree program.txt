@@ -1,0 +1,53 @@
+class node():
+    def __init__(self, data, ll = None, rl = None):
+        self.data = data
+        self.ll = ll
+        self.rl = rl
+
+class binaryTree():
+    def __init__(self):
+        self.root = None
+        
+        
+    def insert(self, item):
+        newNode = node(item)
+        if self.root == None:
+            self.root = newNode
+            
+        else:
+            q = None
+            p = self.root
+            while(p != None and p.data != item):
+                q = p
+                if item < p.data:
+                    p = p.ll
+                else:
+                    p = p.rl
+            if p != None:
+                print("duplicate data")
+            else:
+                if item < q.data:
+                    q.ll = newNode
+                else:
+                    q.rl = newNode
+
+# this is inorder treversal
+# to traverse preorder, switch line 40 and 41
+# to traverse postorde, switch line 41 and 42
+    def traverse(self):
+        def recurse(node):
+            if node != None:
+                recurse(node.ll)
+                print(node.data)
+                recurse(node.rl)
+                
+                
+        recurse(self.root)
+            
+myTree = binaryTree()        
+f = open("C:\p1datafile.txt", 'r')
+for line in f:
+    line = line.strip()
+    number = int(line)
+    myTree.insert(number)
+myTree.traverse()

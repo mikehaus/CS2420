@@ -10,7 +10,7 @@ class Node():
     """
     Basic implementation of a Node in Python.
     """
-    def __init__(self, data, left=None, right=None, height=-1):
+    def __init__(self, data, left=None, right=None):
         """
         Constructor method. Node has the following
         attributes:
@@ -22,7 +22,7 @@ class Node():
         self._data = data
         self.left_child = left
         self.right_child = right
-        self._height = height
+        self._height = 0
 
     def is_leaf(self):
         """
@@ -46,5 +46,12 @@ class Node():
         """
         stringified = str(self._data) + ' (' + str(self._height) + ')'
         return stringified
+
+    def data(self):
+        """
+        Getter method for Node data.
+        Returns data in Node.
+        """
+        return self._data
 
 ########## ---------- END NODE CLASS DECLARATION ---------- ##########
