@@ -38,7 +38,7 @@ class Node():
         update_height method used to update height
         of self.
         """
-        self._height = height
+        self._height = self._height + 1
 
     def __str__(self):
         """
@@ -53,5 +53,12 @@ class Node():
         Returns data in Node.
         """
         return self._data
+
+    def height(self):
+        """
+        Getter method for Node height.
+        Returns height of node.
+        """
+        return self._height
 
 ########## ---------- END NODE CLASS DECLARATION ---------- ##########

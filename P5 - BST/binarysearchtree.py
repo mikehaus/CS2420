@@ -81,4 +81,49 @@ class BinarySearchTree():
             return self.find_helper(cursor.right_child, data)
         return cursor.data()
 
+    def remove(self, data):
+        """
+        Removes data at Node with data.
+        Void method.
+        """
+        if self.root.data() == data:
+            return self.root.data()
+        return self.remove_helper(self.root, data)
+
+    def remove_helper(self, cursor, data):
+        """
+        Recursively does some stuff
+        Implementing after inOrder.
+        """
+        return
+
+    def preorder(self):
+        """
+        Returns an iterator that performs a
+        preorder traversal of the tree.
+        """
+        perorder_list = []
+        if self.root is None:
+            return perorder_list
+        return self.preorder_helper(self.root, perorder_list)
+
+    def preorder_helper(self, cursor, output):
+        """
+        Recursively iterates through tree via
+        preorder traversal which is ROOT->LEFT->RIGHT
+        """
+        output.append[cursor]
+        if cursor is not None:
+            return self.preorder_helper(cursor.left_child, output)
+            return self.preorder_helper(cursor.right_child, output)
+        return output
+
+    def height(self):
+        """
+        Returns height of root node (height of tree).
+        """
+        if self.root is None:
+            return None
+        return self.root.height()
+
 ########## ---------- END BST CLASS DEFINITION ---------- ##########
