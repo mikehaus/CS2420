@@ -60,7 +60,6 @@ class Course:
         """returns attr grade"""
         return self._grade
 
-    
     def __str__(self):
         """returns formatted string as req'd by output"""
         return ('cs{self._number} {self._name} Grade: {self._grade}' 

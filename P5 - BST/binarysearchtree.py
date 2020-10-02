@@ -27,6 +27,13 @@ class BinarySearchTree():
         """
         self.root = None
 
+    def __len__(self):
+        """
+        Returns length of BST (How many Nodes)
+        """
+        out = self.preorder()
+        return len(out)
+
     def is_empty(self):
         """
         Boolean function returns True if empty,
@@ -81,13 +88,17 @@ class BinarySearchTree():
             return self.find_helper(cursor.right_child, data)
         return cursor.data()
 
+    def smallest_child(self, child):
+        curr = child
+        while curr.left_child is not None:
+            curr = curr.left_child
+        return curr
+
     def remove(self, data):
         """
         Removes data at Node with data.
         Void method.
         """
-        if self.root.data() == data:
-            return self.root.data()
         return self.remove_helper(self.root, data)
 
     def remove_helper(self, cursor, data):
@@ -95,7 +106,25 @@ class BinarySearchTree():
         Recursively does some stuff
         Implementing after inOrder.
         """
-        return
+        if cursor is None:
+            return cursor
+        if data < cursor.data():
+            cursor.left_child = self.remove_helper(cursor.left_child, data)
+        elif data > cursor.data():
+            cursor.right_child = self.remove_helper(cursor.right_child, data)
+        else:
+            if cursor.left_child is None:
+                temp_node = cursor.right_child
+                cursor = temp_node
+                return temp_node
+            elif cursor.right_child is None:
+                temp_node = cursor.left_child
+                cursor = temp_node
+                return temp_node
+            temp = self.smallest_child(cursor.right_child)
+            cursor._data = temp.data()
+            cursor.right_child = self.remove_helper(cursor.right_child, temp.data())
+        return cursor
 
     def preorder(self):
         """
@@ -112,10 +141,13 @@ class BinarySearchTree():
         Recursively iterates through tree via
         preorder traversal which is ROOT->LEFT->RIGHT
         """
-        output.append[cursor]
+        if cursor is None:
+            return
         if cursor is not None:
-            return self.preorder_helper(cursor.left_child, output)
-            return self.preorder_helper(cursor.right_child, output)
+            item = cursor.data()
+            output.append(item)
+            self.preorder_helper(cursor.left_child, output)
+            self.preorder_helper(cursor.right_child, output)
         return output
 
     def height(self):
@@ -125,5 +157,19 @@ class BinarySearchTree():
         if self.root is None:
             return None
         return self.root.height()
+
+    def __str__(self):
+        """
+        Returns a string representation of the BST.
+        """
+        return
+
+    def print_helper(self, cursor, offset):
+        """
+        Recursive print helper for tree. Iterates
+        retursively through tree and prints with spacing
+        per offset.
+        """
+        return
 
 ########## ---------- END BST CLASS DEFINITION ---------- ##########
