@@ -144,8 +144,8 @@ class BinarySearchTree():
         if cursor is None:
             return
         if cursor is not None:
-            item = cursor.data()
-            output.append(item)
+            cursor.update_height()
+            output.append(cursor)
             self.preorder_helper(cursor.left_child, output)
             self.preorder_helper(cursor.right_child, output)
         return output
@@ -155,14 +155,17 @@ class BinarySearchTree():
         Returns height of root node (height of tree).
         """
         if self.root is None:
-            return None
-        return self.root.height()
+            return 0
+        return 1 + max(self.root.left_child.height(), self.root.right_child.height())
 
     def __str__(self):
         """
         Returns a string representation of the BST.
         """
-        return
+        output = ''
+        if self.root is None:
+            return output
+        return self.print_helper(self.root, )
 
     def print_helper(self, cursor, offset):
         """

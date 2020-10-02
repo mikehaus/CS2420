@@ -38,7 +38,7 @@ class Node():
         update_height method used to update height
         of self.
         """
-        self._height = self._height + 1
+        self._height = 1 + max(self.left_child.height(), self.right_child.height())
 
     def __str__(self):
         """
