@@ -22,5 +22,6 @@ def main():
     partialoutput = bst.preorder()
     for val in partialoutput:
         print(str(val))
+    bst.__str__()
 
 main()

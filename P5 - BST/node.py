@@ -33,7 +33,7 @@ class Node():
             return False
         return True
 
-    def update_height(self, height):
+    def update_height(self):
         """
         update_height method used to update height
         of self.
