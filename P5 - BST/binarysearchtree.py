@@ -157,7 +157,7 @@ class BinarySearchTree():
         """
         if self.root is None:
             return 0
-        return 1 + max(self.root.left_child.height(), self.root.right_child.height())
+        return self.root.height()
 
     def __str__(self):
         """
@@ -174,14 +174,18 @@ class BinarySearchTree():
         retursively through tree and prints with spacing
         per offset.
         """
-        if cursor is None:
-            return '[empty]'
-        if cursor is not None:
-            output = '{:>' + str(offset * 4) + '} ' + cursor.__str__() +'\n'
-            print(output)
-            self.print_helper(cursor.left_child, cursor.left_child.height())
-            self.print_helper(cursor.right_child, cursor.right_child.height())
-        return ''
-
+        output = ''
+        preordered = self.preorder()
+        for node in preordered:
+            output_offset_couter = offset - node.height()
+            for i in range(output_offset_couter):
+                output += '    '
+            output += str(node)
+            output += '\n'
+            if node.left_child is None:
+                for i in range(output_offset_couter):
+                    output += '    '
+                output += '[empty]\n'
+        return output
 
 ########## ---------- END BST CLASS DEFINITION ---------- ##########
