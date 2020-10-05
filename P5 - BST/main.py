@@ -16,6 +16,8 @@ def main():
     fulloutput = bst.preorder()
     for val in fulloutput:
         print(str(val))
+        if val.left_child is None:
+            print('[empty]')
     removevals = [21, 9, 4, 18, 15, 7]
     for remove in removevals:
         bst.remove(remove)

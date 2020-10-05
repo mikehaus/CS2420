@@ -61,8 +61,10 @@ class BinarySearchTree():
             return Node(data)
         if data < cursor.data():
             cursor.left_child = self.add_helper(cursor.left_child, data)
+            cursor.update_height()
         if data > cursor.data():
             cursor.right_child = self.add_helper(cursor.right_child, data)
+            cursor.update_height()
         return cursor
 
     def find(self, data):
@@ -144,7 +146,6 @@ class BinarySearchTree():
         if cursor is None:
             return
         if cursor is not None:
-            cursor.update_height()
             output.append(cursor)
             self.preorder_helper(cursor.left_child, output)
             self.preorder_helper(cursor.right_child, output)

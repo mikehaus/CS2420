@@ -30,21 +30,30 @@ class Node():
         false if it is a parent node.
         """
         if self.left_child is None and self.right_child is None:
-            return False
-        return True
+            return True
+        return False
 
     def update_height(self):
         """
         update_height method used to update height
         of self.
         """
-        self._height = 1 + max(self.left_child.height(), self.right_child.height())
+        if self.is_leaf():
+            return 0
+        elif self.left_child is None:
+            self._height = 1 + self.right_child.height()
+        elif self.right_child is None:
+            self._height = 1 + self.left_child.height()
+        else:
+            self._height = 1 + max(self.left_child.height(), self.right_child.height())
 
     def __str__(self):
         """
         Returns string representation of Node.
         """
         stringified = str(self._data) + ' (' + str(self._height) + ')'
+        if self.is_leaf():
+            stringified += ' [leaf]'
         return stringified
 
     def data(self):
