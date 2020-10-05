@@ -4,6 +4,7 @@ CS2420 Project 5
 Mike Hollingshaus
 """
 from node import Node
+from recursioncounter import RecursionCounter
 
 ########## ---------- BEGIN BST CLASS DEFINITION ---------- ##########
 
