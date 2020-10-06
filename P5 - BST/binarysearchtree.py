@@ -181,22 +181,22 @@ class BinarySearchTree():
         per offset.
         """
         _ = RecursionCounter()
+        if cursor is None:
+            return
         output = ''
         for i in range(offset):
             output += '    '
-        if cursor is not None:
-            output += str(cursor)
-            print(output)
-            if cursor.left_child is None and cursor.right_child is not None:
+        output += str(cursor)
+        print(output)
+        if cursor.left_child is None:
+            if not cursor.is_leaf():
                 output = ''
                 offset += 1
                 for i in range(offset):
                     output += '    '
                 output += '[Empty]'
                 print(output)
-            self.print_helper(cursor.left_child, offset + 1)
-            if offset == 0:
-                offset += 1
-            self.print_helper(cursor.right_child, offset)
+        self.print_helper(cursor.left_child, offset + 1)
+        self.print_helper(cursor.right_child, offset)
 
 ########## ---------- END BST CLASS DEFINITION ---------- ##########
