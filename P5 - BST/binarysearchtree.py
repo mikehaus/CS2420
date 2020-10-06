@@ -32,6 +32,7 @@ class BinarySearchTree():
         """
         Returns length of BST (How many Nodes)
         """
+        _ = RecursionCounter()
         out = self.preorder()
         return len(out)
 
@@ -58,6 +59,7 @@ class BinarySearchTree():
         """
         Adds node recursively through tree.
         """
+        _ = RecursionCounter()
         if cursor is None:
             return Node(data)
         if data < cursor.data():
@@ -83,6 +85,7 @@ class BinarySearchTree():
         matching data and returns data if found,
         If not found returns None.
         """
+        _ = RecursionCounter()
         if cursor is None:
             return None
         if data < cursor.data():
@@ -109,6 +112,7 @@ class BinarySearchTree():
         Recursively does some stuff
         Implementing after inOrder.
         """
+        _ = RecursionCounter()
         if cursor is None:
             return cursor
         if data < cursor.data():
@@ -144,6 +148,7 @@ class BinarySearchTree():
         Recursively iterates through tree via
         preorder traversal which is ROOT->LEFT->RIGHT
         """
+        _ = RecursionCounter()
         if cursor is None:
             return
         if cursor is not None:
@@ -167,7 +172,7 @@ class BinarySearchTree():
         output = ''
         if self.root is None:
             return output
-        return self.print_helper(self.root, self.root.height())
+        return self.print_helper(self.root, 0)
 
     def print_helper(self, cursor, offset):
         """
@@ -175,18 +180,23 @@ class BinarySearchTree():
         retursively through tree and prints with spacing
         per offset.
         """
+        _ = RecursionCounter()
         output = ''
-        preordered = self.preorder()
-        for node in preordered:
-            output_offset_couter = offset - node.height()
-            for i in range(output_offset_couter):
-                output += '    '
-            output += str(node)
-            output += '\n'
-            if node.left_child is None:
-                for i in range(output_offset_couter):
+        for i in range(offset):
+            output += '    '
+        if cursor is not None:
+            output += str(cursor)
+            print(output)
+            if cursor.left_child is None and cursor.right_child is not None:
+                output = ''
+                offset += 1
+                for i in range(offset):
                     output += '    '
-                output += '[empty]\n'
-        return output
+                output += '[Empty]'
+                print(output)
+            self.print_helper(cursor.left_child, offset + 1)
+            if offset == 0:
+                offset += 1
+            self.print_helper(cursor.right_child, offset)
 
 ########## ---------- END BST CLASS DEFINITION ---------- ##########

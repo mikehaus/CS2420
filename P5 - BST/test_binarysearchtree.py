@@ -167,5 +167,5 @@ class TestCodeingStandards(unittest.TestCase):
             self.assertGreaterEqual(score, 8.5)
 
 
-if __name__==__main__:
-    unittest.main()
+if __name__=="__main__":
+    unittest.main

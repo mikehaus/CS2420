@@ -13,7 +13,7 @@ def main():
     addvals = [21, 26, 30, 9, 4, 14, 28, 18, 15, 10, 2, 3, 7]
     for add in addvals:
         bst.add(add)
-    fulloutput = bst.__str__()
+    fulloutput = str(bst)
     print(fulloutput)
     removevals = [21, 9, 4, 18, 15, 7]
     for remove in removevals:
