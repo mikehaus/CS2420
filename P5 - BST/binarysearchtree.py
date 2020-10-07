@@ -192,17 +192,20 @@ class BinarySearchTree():
             output += '    '
         output += str(cursor)
         print(output)
-        if cursor.left_child is None:
-            if cursor.height > 0:
-                output = ''
-                offset_counter += 1
-                for i in range(offset_counter):
-                    output += '    '
-                output += '[Empty]'
-                print(output)
         self.print_helper(cursor.left_child, offset + 1)
-        self.last_height = cursor.height
         self.print_helper(cursor.right_child, offset + 1)
 
+        def print_empty_tree(self, cursor):
+            """
+            Placeholder to help print
+            """
+            if cursor.left_child is None:
+                if cursor.height > 0:
+                    output = ''
+                    offset_counter += 1
+                    for i in range(offset_counter):
+                        output += '    '
+                    output += '[Empty]'
+                    print(output)
 
 ########## ---------- END BST CLASS DEFINITION ---------- ##########
