@@ -19,10 +19,10 @@ class Node():
         right_child: Node
         height: int
         """
-        self._data = data
+        self.data = data
         self.left_child = left
         self.right_child = right
-        self._height = 0
+        self.height = 0
 
     def is_leaf(self):
         """
@@ -41,33 +41,19 @@ class Node():
         if self.is_leaf():
             return 0
         elif self.left_child is None:
-            self._height = 1 + self.right_child.height()
+            self.height = 1 + self.right_child.height
         elif self.right_child is None:
-            self._height = 1 + self.left_child.height()
+            self.height = 1 + self.left_child.height
         else:
-            self._height = 1 + max(self.left_child.height(), self.right_child.height())
+            self.height = 1 + max(self.left_child.height, self.right_child.height)
 
     def __str__(self):
         """
         Returns string representation of Node.
         """
-        stringified = str(self._data) + ' (' + str(self._height) + ')'
+        stringified = str(self.data) + ' (' + str(self.height) + ')'
         if self.is_leaf():
             stringified += ' [leaf]'
         return stringified
-
-    def data(self):
-        """
-        Getter method for Node data.
-        Returns data in Node.
-        """
-        return self._data
-
-    def height(self):
-        """
-        Getter method for Node height.
-        Returns height of node.
-        """
-        return self._height
 
 ########## ---------- END NODE CLASS DECLARATION ---------- ##########

@@ -62,10 +62,10 @@ class BinarySearchTree():
         _ = RecursionCounter()
         if cursor is None:
             return Node(data)
-        if data < cursor.data():
+        if data < cursor.data:
             cursor.left_child = self.add_helper(cursor.left_child, data)
             cursor.update_height()
-        if data > cursor.data():
+        if data > cursor.data:
             cursor.right_child = self.add_helper(cursor.right_child, data)
             cursor.update_height()
         return cursor
@@ -75,8 +75,8 @@ class BinarySearchTree():
         Returns matched item.
         If item is not in tree, returns none.
         """
-        if self.root.data() == data:
-            return data
+        if self.root.data == data:
+            return self.root
         return self.find_helper(self.root, data)
 
     def find_helper(self, cursor, data):
@@ -88,11 +88,11 @@ class BinarySearchTree():
         _ = RecursionCounter()
         if cursor is None:
             return None
-        if data < cursor.data():
+        if data < cursor.data:
             return self.find_helper(cursor.left_child, data)
-        if data > cursor.data():
+        if data > cursor.data:
             return self.find_helper(cursor.right_child, data)
-        return cursor.data()
+        return cursor
 
     def smallest_child(self, child):
         curr = child
@@ -115,10 +115,12 @@ class BinarySearchTree():
         _ = RecursionCounter()
         if cursor is None:
             return cursor
-        if data < cursor.data():
+        if data < cursor.data:
             cursor.left_child = self.remove_helper(cursor.left_child, data)
-        elif data > cursor.data():
+            cursor.update_height()
+        elif data > cursor.data:
             cursor.right_child = self.remove_helper(cursor.right_child, data)
+            cursor.update_height()
         else:
             if cursor.left_child is None:
                 temp_node = cursor.right_child
@@ -129,8 +131,8 @@ class BinarySearchTree():
                 cursor = temp_node
                 return temp_node
             temp = self.smallest_child(cursor.right_child)
-            cursor._data = temp.data()
-            cursor.right_child = self.remove_helper(cursor.right_child, temp.data())
+            cursor.data = temp.data
+            cursor.right_child = self.remove_helper(cursor.right_child, temp.data)
         return cursor
 
     def preorder(self):
@@ -152,7 +154,7 @@ class BinarySearchTree():
         if cursor is None:
             return
         if cursor is not None:
-            output.append(cursor)
+            output.append(cursor.data)
             self.preorder_helper(cursor.left_child, output)
             self.preorder_helper(cursor.right_child, output)
         return output
@@ -163,7 +165,7 @@ class BinarySearchTree():
         """
         if self.root is None:
             return 0
-        return self.root.height()
+        return self.root.height
 
     def __str__(self):
         """
@@ -172,7 +174,8 @@ class BinarySearchTree():
         output = ''
         if self.root is None:
             return output
-        return self.print_helper(self.root, self.height())
+        self.print_helper(self.root, self.height())
+        return ''
 
     def print_helper(self, cursor, offset):
         """
@@ -184,13 +187,13 @@ class BinarySearchTree():
         if cursor is None:
             return ''
         output = ''
-        offset_counter = offset - self.root.height()
+        offset_counter = offset - self.root.height
         for i in range(offset_counter):
             output += '    '
         output += str(cursor)
         print(output)
         if cursor.left_child is None:
-            if cursor.height() > 0:
+            if cursor.height > 0:
                 output = ''
                 offset_counter += 1
                 for i in range(offset_counter):
@@ -198,6 +201,7 @@ class BinarySearchTree():
                 output += '[Empty]'
                 print(output)
         self.print_helper(cursor.left_child, offset + 1)
+        self.last_height = cursor.height
         self.print_helper(cursor.right_child, offset + 1)
 
 
