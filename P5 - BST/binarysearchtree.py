@@ -172,7 +172,7 @@ class BinarySearchTree():
         output = ''
         if self.root is None:
             return output
-        return self.print_helper(self.root, 0)
+        return self.print_helper(self.root, self.height())
 
     def print_helper(self, cursor, offset):
         """
@@ -182,21 +182,23 @@ class BinarySearchTree():
         """
         _ = RecursionCounter()
         if cursor is None:
-            return
+            return ''
         output = ''
-        for i in range(offset):
+        offset_counter = offset - self.root.height()
+        for i in range(offset_counter):
             output += '    '
         output += str(cursor)
         print(output)
         if cursor.left_child is None:
-            if not cursor.is_leaf():
+            if cursor.height() > 0:
                 output = ''
-                offset += 1
-                for i in range(offset):
+                offset_counter += 1
+                for i in range(offset_counter):
                     output += '    '
                 output += '[Empty]'
                 print(output)
         self.print_helper(cursor.left_child, offset + 1)
-        self.print_helper(cursor.right_child, offset)
+        self.print_helper(cursor.right_child, offset + 1)
+
 
 ########## ---------- END BST CLASS DEFINITION ---------- ##########
