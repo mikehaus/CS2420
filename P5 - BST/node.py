@@ -51,9 +51,12 @@ class Node():
         """
         Returns string representation of Node.
         """
-        stringified = str(self.data) + ' (' + str(self.height) + ')'
+        stringified_leaf_add = ''
         if self.is_leaf():
-            stringified += ' [leaf]'
+            self.height = 0
+            stringified_leaf_add += ' [leaf]'
+        stringified = str(self.data) + ' (' + str(self.height) + ')'
+        stringified += stringified_leaf_add
         return stringified
 
 ########## ---------- END NODE CLASS DECLARATION ---------- ##########

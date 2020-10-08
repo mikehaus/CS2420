@@ -27,6 +27,7 @@ class BinarySearchTree():
         BST constructor method.
         """
         self.root = None
+        self.left_is_leaf = False
 
     def __len__(self):
         """
@@ -133,6 +134,7 @@ class BinarySearchTree():
             temp = self.smallest_child(cursor.right_child)
             cursor.data = temp.data
             cursor.right_child = self.remove_helper(cursor.right_child, temp.data)
+            cursor.update_height()
         return cursor
 
     def preorder(self):
@@ -192,20 +194,25 @@ class BinarySearchTree():
             output += '    '
         output += str(cursor)
         print(output)
+        if cursor.left_child is None:
+            if cursor.height > 0:
+                output = ''
+                offset_counter += 1
+                for i in range(offset_counter):
+                    output += '    '
+                output += '[Empty]'
+                print(output)
+            elif self.left_is_leaf is True:
+                output = ''
+                for i in range(offset_counter):
+                    output += '    '
+                output += '[Empty]'
+                print(output)
+                self.left_is_leaf = False
+        if cursor.left_child is not None:
+            if cursor.left_child.is_leaf() and cursor.right_child is None:
+                self.left_is_leaf = True
         self.print_helper(cursor.left_child, offset + 1)
         self.print_helper(cursor.right_child, offset + 1)
-
-        def print_empty_tree(self, cursor):
-            """
-            Placeholder to help print
-            """
-            if cursor.left_child is None:
-                if cursor.height > 0:
-                    output = ''
-                    offset_counter += 1
-                    for i in range(offset_counter):
-                        output += '    '
-                    output += '[Empty]'
-                    print(output)
 
 ########## ---------- END BST CLASS DEFINITION ---------- ##########
