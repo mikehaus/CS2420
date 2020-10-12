@@ -69,10 +69,25 @@ class BinarySearchTree():
             return Node(data)
         if data < cursor.data:
             cursor.left_child = self.add_helper(cursor.left_child, data)
-            cursor.update_height()
         if data > cursor.data:
             cursor.right_child = self.add_helper(cursor.right_child, data)
-            cursor.update_height()
+        cursor.update_height()
+        #BALANCING ALGORITHM
+        tree_balance = self.get_balance()
+        #IF Left Left imbalance
+        if tree_balance > 1 and data < cursor.left_child.data: 
+            return self.rotate_right(cursor)
+        #IF Right Right imbalance
+        if tree_balance < -1 and data > cursor.right_child.data: 
+            return self.leftRotate(cursor)
+        #IF Left Right imbalance
+        if tree_balance > 1 and data > cursor.left_child.data: 
+            cursor.left_child = self.rotate_left(cursor.left_child) 
+            return self.rotate_right(cursor)
+        # IF Right Left imbalance
+        if tree_balance < -1 and data < cursor.right_child.data: 
+            root.right_child = self.rotate_right(cursor.right) 
+            return self.rotate_left(cursor)
         return cursor
 
     def find(self, data):
@@ -197,15 +212,15 @@ class BinarySearchTree():
             return 0
         return self.root.height
 
-    def getBalance(self):
+    def get_balance(self):
         """
         returns balance of tree for rebalancing.
         """
         if self.root is None:
             return 0
-        return self.root.left.height() - self.root.right.height()
+        return self.root.left_child.height() - self.root.right_child.height()
 
-    def rotateRight(self, cursor):
+    def rotate_right(self, cursor):
         """
         Rotates over root.left
         """
@@ -220,7 +235,7 @@ class BinarySearchTree():
         # Return the new root 
         return left_right
 
-    def rotateLeft(self, cursor):
+    def rotate_left(self, cursor):
         """
         Rotates over root.right
         """
