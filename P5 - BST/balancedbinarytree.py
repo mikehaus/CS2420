@@ -1,6 +1,6 @@
 """
-Implementation of BinarySearchTree ADT for
-CS2420 Project 5
+Implementation of BST for
+Project 5 CS2420
 Mike Hollingshaus
 """
 from node import Node
@@ -142,10 +142,10 @@ class BinarySearchTree():
         Returns an iterator that performs a
         preorder traversal of the tree.
         """
-        perorder_list = []
+        preorder_list = []
         if self.root is None:
-            return perorder_list
-        return self.preorder_helper(self.root, perorder_list)
+            return preorder_list
+        return self.preorder_helper(self.root, preorder_list)
 
     def preorder_helper(self, cursor, output):
         """
