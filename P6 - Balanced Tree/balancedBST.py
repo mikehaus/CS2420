@@ -72,22 +72,6 @@ class BinarySearchTree():
         if data > cursor.data:
             cursor.right_child = self.add_helper(cursor.right_child, data)
         cursor.update_height()
-        #BALANCING ALGORITHM
-        tree_balance = self.get_balance()
-        #IF Left Left imbalance
-        if tree_balance > 1 and data < cursor.left_child.data: 
-            return self.rotate_right(cursor)
-        #IF Right Right imbalance
-        if tree_balance < -1 and data > cursor.right_child.data: 
-            return self.leftRotate(cursor)
-        #IF Left Right imbalance
-        if tree_balance > 1 and data > cursor.left_child.data: 
-            cursor.left_child = self.rotate_left(cursor.left_child) 
-            return self.rotate_right(cursor)
-        # IF Right Left imbalance
-        if tree_balance < -1 and data < cursor.right_child.data: 
-            root.right_child = self.rotate_right(cursor.right) 
-            return self.rotate_left(cursor)
         return cursor
 
     def find(self, data):
@@ -250,7 +234,7 @@ class BinarySearchTree():
         # Return the new root 
         return right
 
-    def rebalance(self):
+    def rebalance(self, data):
         """
         1) take middle value as root
         2) split list into left and right halves, excluding
@@ -261,14 +245,35 @@ class BinarySearchTree():
             return None
         self.rebalance_helper(self.root)
 
-    def rebalance_helper(self, cursor):
+    def rebalance_helper(self, cursor, data):
         """
         1) take middle value as root
         2) split list into left and right halves, excluding
         root.
         4) recursively rebuild the tree using steps 1 and 2 until done
         """
+        _ = RecursionCounter()
+        root = cursor
+        root.left_child
         return
+
+    def balance_tree(self, cursor, data):
+        #BALANCING ALGORITHM
+        tree_balance = self.get_balance()
+        #IF Left Left imbalance
+        if tree_balance > 1 and data < cursor.left_child.data: 
+            return self.rotate_right(cursor)
+        #IF Right Right imbalance
+        if tree_balance < -1 and data > cursor.right_child.data: 
+            return self.leftRotate(cursor)
+        #IF Left Right imbalance
+        if tree_balance > 1 and data > cursor.left_child.data: 
+            cursor.left_child = self.rotate_left(cursor.left_child) 
+            return self.rotate_right(cursor)
+        # IF Right Left imbalance
+        if tree_balance < -1 and data < cursor.right_child.data: 
+            root.right_child = self.rotate_right(cursor.right) 
+            return self.rotate_left(cursor)
         
     def __str__(self):
         """
