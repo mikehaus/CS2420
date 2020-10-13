@@ -3,7 +3,7 @@ Main driver file for
 P5 2420
 Mike Hollingshaus
 """
-from balancedBST import BinarySearchTree
+from binarysearchtree import BinarySearchTree
 
 ########## ---------- BEGIN MAIN MODULE ---------- ##########
 
@@ -13,10 +13,10 @@ def main():
     prints list then goes through bst and prints all data.
     """
     bst = BinarySearchTree()
-    addvals = [21, 26, 30, 9, 4, 14, 28, 18, 15, 10, 2, 3, 7]
-    for add in addvals:
-        bst.add(add)
+    for i in range(10):
+        bst.add(i)
     inorder_bst = bst.inorder()
+    bst.rebalance_tree()
     output = ''
     for node_data in inorder_bst:
         output += str(node_data)

@@ -3,8 +3,64 @@ Implementation of Balanced BST for
 CS2420 Project 6
 Mike Hollingshaus
 """
-from node import Node
 from recursioncounter import RecursionCounter
+
+########## ---------- BEGIN NODE CLASS DEFINITION ----------- ##########
+
+class Node():
+    """
+    Basic implementation of a Node in Python.
+    """
+    def __init__(self, data, left=None, right=None):
+        """
+        Constructor method. Node has the following
+        attributes:
+        data: int
+        left_child: Node
+        right_child: Node
+        height: int
+        """
+        self.data = data
+        self.left_child = left
+        self.right_child = right
+        self.height = 0
+
+    def is_leaf(self):
+        """
+        is_leaf returns true if it is a leaf node
+        false if it is a parent node.
+        """
+        if self.left_child is None and self.right_child is None:
+            return True
+        return False
+
+    def update_height(self):
+        """
+        update_height method used to update height
+        of self.
+        """
+        if self.is_leaf():
+            return 0
+        elif self.left_child is None:
+            self.height = 1 + self.right_child.height
+        elif self.right_child is None:
+            self.height = 1 + self.left_child.height
+        else:
+            self.height = 1 + max(self.left_child.height, self.right_child.height)
+
+    def __str__(self):
+        """
+        Returns string representation of Node.
+        """
+        stringified_leaf_add = ''
+        if self.is_leaf():
+            self.height = 0
+            stringified_leaf_add += ' [leaf]'
+        stringified = str(self.data) + ' (' + str(self.height) + ')'
+        stringified += stringified_leaf_add
+        return stringified
+
+########## ---------- END NODE CLASS DEFINITION ---------- ##########
 
 ########## ---------- BEGIN BST CLASS DEFINITION ---------- ##########
 
@@ -27,7 +83,7 @@ class BinarySearchTree():
         BST constructor method.
         """
         self.root = None
-        self.height = -1
+        self._height = -1
         self.left_is_leaf = False
 
     def __len__(self):
@@ -63,10 +119,10 @@ class BinarySearchTree():
         Does not add if duplicate cursor.
         """
         _ = RecursionCounter()
-        if cursor.data == data:
-            return None
         if cursor is None:
             return Node(data)
+        if cursor.data == data:
+            return None
         if data < cursor.data:
             cursor.left_child = self.add_helper(cursor.left_child, data)
         if data > cursor.data:
@@ -193,16 +249,22 @@ class BinarySearchTree():
         Returns height of root node (height of tree).
         """
         if self.root is None:
-            return 0
-        return self.root.height
+            return -1
+        return self._height
 
-    def get_balance(self):
+    def get_balance(self, cursor):
         """
         returns balance of tree for rebalancing.
         """
-        if self.root is None:
+        h_left = 0
+        h_right = 0
+        if cursor is None:
             return 0
-        return self.root.left_child.height() - self.root.right_child.height()
+        if cursor.left_child is not None:
+            h_left = cursor.left_child.height
+        if cursor.right_child is not None:
+            h_right = cursor.right_child.height
+        return h_left - h_right
 
     def rotate_right(self, cursor):
         """
@@ -234,7 +296,7 @@ class BinarySearchTree():
         # Return the new root 
         return right
 
-    def rebalance(self, data):
+    def rebalance_tree(self):
         """
         1) take middle value as root
         2) split list into left and right halves, excluding
@@ -245,7 +307,7 @@ class BinarySearchTree():
             return None
         self.rebalance_helper(self.root)
 
-    def rebalance_helper(self, cursor, data):
+    def rebalance_helper(self, cursor):
         """
         1) take middle value as root
         2) split list into left and right halves, excluding
@@ -253,27 +315,25 @@ class BinarySearchTree():
         4) recursively rebuild the tree using steps 1 and 2 until done
         """
         _ = RecursionCounter()
-        root = cursor
-        root.left_child
-        return
+        if cursor is None:
+            return
+        cursor.left_child = self.rebalance_helper(cursor.left_child)
+        cursor.right_child = self.rebalance_helper(cursor.right_child)
+        cursor = self.balance_node(cursor)
+        return cursor
 
-    def balance_tree(self, cursor, data):
+    def balance_node(self, cursor):
         #BALANCING ALGORITHM
-        tree_balance = self.get_balance()
-        #IF Left Left imbalance
-        if tree_balance > 1 and data < cursor.left_child.data: 
-            return self.rotate_right(cursor)
-        #IF Right Right imbalance
-        if tree_balance < -1 and data > cursor.right_child.data: 
-            return self.leftRotate(cursor)
-        #IF Left Right imbalance
-        if tree_balance > 1 and data > cursor.left_child.data: 
-            cursor.left_child = self.rotate_left(cursor.left_child) 
-            return self.rotate_right(cursor)
-        # IF Right Left imbalance
-        if tree_balance < -1 and data < cursor.right_child.data: 
-            root.right_child = self.rotate_right(cursor.right) 
-            return self.rotate_left(cursor)
+        balance = self.get_balance(cursor)
+        if balance < -1:
+            if cursor.right_child.left_child is not None:
+                cursor.right_child = self.rotate_right(cursor.right_child)
+            cursor = self.rotate_left(cursor.right_child)
+        if balance > 1:
+            if cursor.left_child.right_child is not None:
+                cursor.left_child = self.rotate_left(cursor.left_child)
+            cursor = self.rotate_right(cursor.left_child)
+        return cursor
         
     def __str__(self):
         """
