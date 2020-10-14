@@ -23,7 +23,7 @@ class Node():
         self.data = data
         self.left_child = left
         self.right_child = right
-        self.height = 1
+        self.height = 0
 
     def is_leaf(self):
         """
@@ -111,7 +111,10 @@ class BinarySearchTree():
         if self.is_empty():
             self.root = Node(data)
             return
-        return self.add_helper(self.root, data)
+        cursor = self.add_helper(self.root, data)
+        self.root.update_height()
+        return cursor
+
 
     def add_helper(self, cursor, data):
         """
@@ -125,23 +128,12 @@ class BinarySearchTree():
             return None
         if data < cursor.data:
             cursor.left_child = self.add_helper(cursor.left_child, data)
+            cursor.left_child.update_height()
+            cursor.update_height()
         if data > cursor.data:
             cursor.right_child = self.add_helper(cursor.right_child, data)
-        cursor.update_height()
-        balance = self.get_balance(cursor)
-        # Case LL or LR
-        if balance > 1:
-            # Left Right 
-            if data > cursor.left_child.data:
-                cursor.left_child = self.rotate_left(cursor.left_child)
-            return self.rotate_right(cursor)
-        # Case RR or RL
-        if balance < -1:
-            # Right Left
-            if data < cursor.right_child.data:
-                cursor.right_child = self.rotate_right(cursor.right_child)
-            return self.rotate_left(cursor)
-
+            cursor.right_child.update_height()
+            cursor.update_height()
         return cursor
 
     def find(self, data):
