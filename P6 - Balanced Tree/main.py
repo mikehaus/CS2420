@@ -13,7 +13,7 @@ def main():
     prints list then goes through bst and prints all data.
     """
     bst = BinarySearchTree()
-    for i in range(10):
+    for i in range(5):
         bst.add(i)
     inorder_bst = bst.inorder()
     bst.rebalance_tree()

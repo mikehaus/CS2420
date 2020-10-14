@@ -23,7 +23,7 @@ class Node():
         self.data = data
         self.left_child = left
         self.right_child = right
-        self.height = 0
+        self.height = 1
 
     def is_leaf(self):
         """
@@ -128,6 +128,20 @@ class BinarySearchTree():
         if data > cursor.data:
             cursor.right_child = self.add_helper(cursor.right_child, data)
         cursor.update_height()
+        balance = self.get_balance(cursor)
+        # Case LL or LR
+        if balance > 1:
+            # Left Right 
+            if data > cursor.left_child.data:
+                cursor.left_child = self.rotate_left(cursor.left_child)
+            return self.rotate_right(cursor)
+        # Case RR or RL
+        if balance < -1:
+            # Right Left
+            if data < cursor.right_child.data:
+                cursor.right_child = self.rotate_right(cursor.right_child)
+            return self.rotate_left(cursor)
+
         return cursor
 
     def find(self, data):
@@ -275,10 +289,9 @@ class BinarySearchTree():
         # Perform rotation 
         left.right_child = cursor
         cursor.left_child = left_right
-        # Update heights 
-        cursor.update_height()
-        left_right.update_height() 
         # Return the new root 
+        cursor.update_height()
+        left.update_height()
         return left_right
 
     def rotate_left(self, cursor):
@@ -290,10 +303,9 @@ class BinarySearchTree():
         # Perform rotation 
         right.left_child = cursor
         cursor.right_child = right_left
-        # Update heights 
+        # Return the new root 
         cursor.update_height()
         right.update_height()
-        # Return the new root 
         return right
 
     def rebalance_tree(self):
@@ -319,20 +331,21 @@ class BinarySearchTree():
             return
         cursor.left_child = self.rebalance_helper(cursor.left_child)
         cursor.right_child = self.rebalance_helper(cursor.right_child)
-        cursor = self.balance_node(cursor)
         return cursor
 
     def balance_node(self, cursor):
         #BALANCING ALGORITHM
         balance = self.get_balance(cursor)
         if balance < -1:
-            if cursor.right_child.left_child is not None:
+            if cursor.right_child.left_child is not None and self.get_balance(cursor.right_child) > 1:
                 cursor.right_child = self.rotate_right(cursor.right_child)
-            cursor = self.rotate_left(cursor.right_child)
+            cursor = self.rotate_left(cursor)
+            cursor.update_height()
         if balance > 1:
-            if cursor.left_child.right_child is not None:
+            if cursor.left_child.right_child is not None and self.get_balance(cursor.left_child) < -1:
                 cursor.left_child = self.rotate_left(cursor.left_child)
-            cursor = self.rotate_right(cursor.left_child)
+            cursor = self.rotate_right(cursor)
+            cursor.update_height()
         return cursor
         
     def __str__(self):
