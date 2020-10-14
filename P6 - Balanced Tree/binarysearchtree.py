@@ -323,19 +323,22 @@ class BinarySearchTree():
             return
         cursor.left_child = self.rebalance_helper(cursor.left_child)
         cursor.right_child = self.rebalance_helper(cursor.right_child)
+        cursor = self.balance_node(cursor)
         return cursor
 
     def balance_node(self, cursor):
         #BALANCING ALGORITHM
         balance = self.get_balance(cursor)
-        if balance < -1:
-            if cursor.right_child.left_child is not None and self.get_balance(cursor.right_child) > 1:
-                cursor.right_child = self.rotate_right(cursor.right_child)
+        if balance < 0:
+            if cursor.right_child is not None:
+                if self.get_balance(cursor.right_child > 0):
+                    cursor.right_child = self.rotate_right(cursor.right_child)
             cursor = self.rotate_left(cursor)
             cursor.update_height()
-        if balance > 1:
-            if cursor.left_child.right_child is not None and self.get_balance(cursor.left_child) < -1:
-                cursor.left_child = self.rotate_left(cursor.left_child)
+        if balance > 0:
+            if cursor.left_child is not None:
+                if self.get_balance(cursor.left_child < 0):
+                    cursor.left_child = self.rotate_left(cursor.left_child)
             cursor = self.rotate_right(cursor)
             cursor.update_height()
         return cursor
