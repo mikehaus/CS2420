@@ -13,12 +13,12 @@ def main():
     prints list then goes through bst and prints all data.
     """
     bst = BinarySearchTree()
-    for i in range(5):
+    for i in range(10):
         bst.add(i)
-    inorder_bst = bst.inorder()
     bst.rebalance_tree()
+    preorder = bst.preorder()
     output = ''
-    for node_data in inorder_bst:
+    for node_data in preorder:
         output += str(node_data)
         output += ', '
     print(output)

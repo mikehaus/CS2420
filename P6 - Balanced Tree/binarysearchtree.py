@@ -39,8 +39,8 @@ class Node():
         update_height method used to update height
         of self.
         """
-        if self.is_leaf():
-            return 0
+        if self.left_child is None and self.right_child is None:
+            self.height = 0
         elif self.left_child is None:
             self.height = 1 + self.right_child.height
         elif self.right_child is None:
@@ -113,6 +113,7 @@ class BinarySearchTree():
             return
         cursor = self.add_helper(self.root, data)
         self.root.update_height()
+        self._height = self.root.height
         return cursor
 
 
@@ -284,7 +285,7 @@ class BinarySearchTree():
         # Return the new root 
         cursor.update_height()
         left.update_height()
-        return left_right
+        return left
 
     def rotate_left(self, cursor):
         """
@@ -309,7 +310,9 @@ class BinarySearchTree():
         """
         if self.root is None:
             return None
-        self.rebalance_helper(self.root)
+        self.root = self.rebalance_helper(self.root)
+        self.root.update_height()
+        self._height = self.root.height
 
     def rebalance_helper(self, cursor):
         """
@@ -331,15 +334,16 @@ class BinarySearchTree():
         balance = self.get_balance(cursor)
         if balance < 0:
             if cursor.right_child is not None:
-                if self.get_balance(cursor.right_child > 0):
+                if self.get_balance(cursor.right_child) > 0:
                     cursor.right_child = self.rotate_right(cursor.right_child)
             cursor = self.rotate_left(cursor)
             cursor.update_height()
         if balance > 0:
             if cursor.left_child is not None:
-                if self.get_balance(cursor.left_child < 0):
+                if self.get_balance(cursor.left_child) < 0:
                     cursor.left_child = self.rotate_left(cursor.left_child)
             cursor = self.rotate_right(cursor)
+            cursor.right_child.update_height()
             cursor.update_height()
         return cursor
         
