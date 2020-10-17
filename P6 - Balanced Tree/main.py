@@ -14,7 +14,7 @@ def main():
     """
     bst = BinarySearchTree()
     for i in range(10):
-        bst.add(i)
+        bst.add(1)
     bst.rebalance_tree()
     preorder = bst.preorder()
     output = ''

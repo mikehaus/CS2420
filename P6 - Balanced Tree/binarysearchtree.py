@@ -4,6 +4,7 @@ CS2420 Project 6
 Mike Hollingshaus
 """
 from recursioncounter import RecursionCounter
+import math
 
 ########## ---------- BEGIN NODE CLASS DEFINITION ----------- ##########
 
@@ -115,7 +116,6 @@ class BinarySearchTree():
         self.root.update_height()
         self._height = self.root.height
         return cursor
-
 
     def add_helper(self, cursor, data):
         """
@@ -301,7 +301,7 @@ class BinarySearchTree():
         right.update_height()
         return right
 
-    def rebalance_tree(self):
+    def rebalance_tree_test(self):
         """
         1) take middle value as root
         2) split list into left and right halves, excluding
@@ -314,7 +314,39 @@ class BinarySearchTree():
         self.root.update_height()
         self._height = self.root.height
 
-    def rebalance_helper(self, cursor):
+    def rebalance_tree(self):
+        """
+        1) take middle value as root
+        2) split list into left and right halves, excluding
+        root.
+        4) recursively rebuild the tree using steps 1 and 2 until done
+        """
+        if self.root is None:
+            return None
+        inorder_list = self.inorder()
+        self.root = None
+        self.root = self.rebalance_helper(inorder_list, self)
+        self.root.update_height()
+        self._height = self.root.height
+
+    def rebalance_helper(self, inorder_list, bst):
+        """
+        1) take middle value as root
+        2) split list into left and right halves, excluding
+        root.
+        4) recursively rebuild the tree using steps 1 and 2 until done
+        """
+        if len(inorder_list) == 0:
+            return 
+        middle_index = math.floor(len(inorder_list) / 2)
+        left_side = inorder_list[0: middle_index]
+        right_side = inorder_list[middle_index + 1: len(inorder_list) - 1]
+        bst.add(inorder_list[middle_index])
+        self.rebalance_helper(left_side, bst)
+        self.rebalance_helper(right_side, bst)
+        return bst.root
+
+    def rebalance_helper_test(self, cursor):
         """
         1) take middle value as root
         2) split list into left and right halves, excluding
@@ -332,11 +364,14 @@ class BinarySearchTree():
     def balance_node(self, cursor):
         #BALANCING ALGORITHM
         balance = self.get_balance(cursor)
+        if balance == 0:
+            return cursor
         if balance < 0:
             if cursor.right_child is not None:
                 if self.get_balance(cursor.right_child) > 0:
                     cursor.right_child = self.rotate_right(cursor.right_child)
             cursor = self.rotate_left(cursor)
+            cursor.left_child.update_height()
             cursor.update_height()
         if balance > 0:
             if cursor.left_child is not None:
