@@ -13,8 +13,8 @@ def main():
     prints list then goes through bst and prints all data.
     """
     bst = BinarySearchTree()
-    for i in range(10):
-        bst.add(1)
+    for i in range(11):
+        bst.add(i)
     bst.rebalance_tree()
     preorder = bst.preorder()
     output = ''

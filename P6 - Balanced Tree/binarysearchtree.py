@@ -325,7 +325,7 @@ class BinarySearchTree():
             return None
         inorder_list = self.inorder()
         self.root = None
-        self.root = self.rebalance_helper(inorder_list, self)
+        self.rebalance_helper(inorder_list, self)
         self.root.update_height()
         self._height = self.root.height
 
@@ -336,15 +336,17 @@ class BinarySearchTree():
         root.
         4) recursively rebuild the tree using steps 1 and 2 until done
         """
+        if len(inorder_list) == 1:
+            bst.add(inorder_list[0])
+            return
         if len(inorder_list) == 0:
-            return 
-        middle_index = math.floor(len(inorder_list) / 2)
+            return
+        middle_index = math.ceil((len(inorder_list) - 1) / 2)
         left_side = inorder_list[0: middle_index]
-        right_side = inorder_list[middle_index + 1: len(inorder_list) - 1]
+        right_side = inorder_list[middle_index + 1: len(inorder_list)]
         bst.add(inorder_list[middle_index])
         self.rebalance_helper(left_side, bst)
         self.rebalance_helper(right_side, bst)
-        return bst.root
 
     def rebalance_helper_test(self, cursor):
         """
