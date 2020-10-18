@@ -162,6 +162,9 @@ class BinarySearchTree():
         return cursor
 
     def smallest_child(self, child):
+        """
+        Used to determine smalles child node in branch.
+        """
         curr = child
         while curr.left_child is not None:
             curr = curr.left_child
@@ -185,7 +188,7 @@ class BinarySearchTree():
         if data < cursor.data:
             cursor.left_child = self.remove_helper(cursor.left_child, data)
             cursor.update_height()
-        elif data > cursor.data:
+        if data > cursor.data:
             cursor.right_child = self.remove_helper(cursor.right_child, data)
             cursor.update_height()
         else:
@@ -193,7 +196,7 @@ class BinarySearchTree():
                 temp_node = cursor.right_child
                 cursor = temp_node
                 return temp_node
-            elif cursor.right_child is None:
+            if cursor.right_child is None:
                 temp_node = cursor.left_child
                 cursor = temp_node
                 return temp_node
@@ -279,10 +282,10 @@ class BinarySearchTree():
         """
         left = cursor.left_child
         left_right = left.right_child
-        # Perform rotation 
+        # Perform rotation
         left.right_child = cursor
         cursor.left_child = left_right
-        # Return the new root 
+        # Return the new root
         cursor.update_height()
         left.update_height()
         return left
@@ -291,12 +294,12 @@ class BinarySearchTree():
         """
         Rotates over root.right
         """
-        right = cursor.right_child 
-        right_left = right.left_child 
-        # Perform rotation 
+        right = cursor.right_child
+        right_left = right.left_child
+        # Perform rotation
         right.left_child = cursor
         cursor.right_child = right_left
-        # Return the new root 
+        # Return the new root
         cursor.update_height()
         right.update_height()
         return right
@@ -310,7 +313,7 @@ class BinarySearchTree():
         """
         if self.root is None:
             return None
-        self.root = self.rebalance_helper(self.root)
+        self.root = self.rebalance_helper_test(self.root)
         self.root.update_height()
         self._height = self.root.height
 
@@ -383,7 +386,7 @@ class BinarySearchTree():
             cursor.right_child.update_height()
             cursor.update_height()
         return cursor
-        
+
     def __str__(self):
         """
         Returns a string representation of the BST.
