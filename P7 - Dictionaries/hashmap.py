@@ -3,21 +3,9 @@ HashMap ADT P7 CS2420
 Mike Hollingshaus
 """
 
-class Entry(object):
-    """
-    Dictionary entry class including a key value pair
-    """
-
-    def __init__(self, key, value):
-        """
-        Entry Class Constructor
-        """
-        self.key = key
-        self.value = value
-
 #-------- START HASHMAP CLASS DECLARATION --------#
 
-class HashMap(object):
+class HashMap():
 
     def __init__(self):
         """
@@ -44,7 +32,11 @@ class HashMap(object):
         index = self.hash(key)
         if self.dictionary[index] is None:
             return default
-        return len(self.dictionary[index])
+        for i in range(index, len(self.dictionary)):
+            keyValuePair = self.dictionary[i]
+            if keyValuePair[0] == key:
+                return keyValuePair[1]
+        return default
 
     def set(self, key, value):
         """
@@ -60,18 +52,26 @@ class HashMap(object):
                     if i[0] is None:
                         self.dictionary[i] = [key, value]
                         self._size += 1
+                        self.keys.append([key, value])
             # If filled and matches key
             else:
-                for keyValuePair in self.dictionary[index]:
-                    if keyValuePair[0] == key:
-                        keyValuePair[1] = value
+                for keyValuePair in self.dictionary:
+                    if keyValuePair[0] == key: 
+                        self.dictionary[index] = [key, value]
+                        break
+                    if keyValuePair is None:
+                        self.dictionary[index] = [key, value]
+                        self._size += 1
+                        self.keys.append([key, value])
                         break
         # if index is empty
         else:
-            self.dictionary[index] = []
-            self.dictionary[index].append([key, value])
+            self.dictionary[index] = [key, value]
+            self.size += 1
+            self.keys.append([key, value])
+        # Check load balance
         if self.isLoadBalanceGreaterThan80():
-            self.rehash
+            self.rehash()
 
     def isLoadBalanceGreaterThan80(self):
         """
@@ -90,7 +90,7 @@ class HashMap(object):
         self._capacity = 8
         self._keys = []
         self._size = 0
-        self.dictionary = {}
+        self.dictionary = [None] * 8
 
     def size(self):
         """
@@ -110,5 +110,10 @@ class HashMap(object):
         The new table should be twice the capacity of the
         current table.
         """
+        self.clear
+        self._capacity = 16
+        self.dictionary = [None] * 16
+        for keyValuePair in self.keys:
+            self.set(keyValuePair[0], keyValuePair[1])
         
 #--------- END HASHMAP CLASS DECLARATION -----------#
