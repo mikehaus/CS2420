@@ -20,8 +20,17 @@ def clean_line(raw_line):
     words = [word for word in cleaned.split() if len(word) > 1]
     return words
 
-
 def main():
     """
     Main function
     """
+    hashmap = HashMap()
+    file = open('AliceInWonderland.txt', 'r')
+    for line in file:
+        text = file.readline()
+        text = clean_line(text)
+        print(text)
+        for word in text:
+            hashmap.set(word)
+
+main()

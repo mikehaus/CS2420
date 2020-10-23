@@ -38,7 +38,7 @@ class HashMap():
                 return keyValuePair[1]
         return default
 
-    def set(self, key, value):
+    def set(self, key, value=None):
         """
         Add the key, value pair to the hashMap. After adding,
         if load factor is >=80%, rehash the map into a map
@@ -50,25 +50,29 @@ class HashMap():
             if self.dictionary[index][0] != key:
                 for i in self.dictionary:
                     if i[0] is None:
+                        if value is None:
+                            value = 1
                         self.dictionary[i] = [key, value]
                         self._size += 1
-                        self.keys.append([key, value])
             # If filled and matches key
             else:
                 for keyValuePair in self.dictionary:
                     if keyValuePair[0] == key: 
-                        self.dictionary[index] = [key, value]
+                        currValue = keyValuePair[1]
+                        self.dictionary[index] = [key, currValue + 1]
                         break
                     if keyValuePair is None:
+                        if value is None:
+                            value = 1
                         self.dictionary[index] = [key, value]
                         self._size += 1
-                        self.keys.append([key, value])
                         break
         # if index is empty
         else:
+            if value is None:
+                value = 1
             self.dictionary[index] = [key, value]
             self.size += 1
-            self.keys.append([key, value])
         # Check load balance
         if self.isLoadBalanceGreaterThan80():
             self.rehash()
@@ -110,10 +114,14 @@ class HashMap():
         The new table should be twice the capacity of the
         current table.
         """
+        self._keys = []
+        for index in self.dictionary:
+            if index is not None:
+                self._keys.append(index[0], index[1])
         self.clear
         self._capacity = 16
         self.dictionary = [None] * 16
-        for keyValuePair in self.keys:
+        for keyValuePair in self._keys:
             self.set(keyValuePair[0], keyValuePair[1])
         
 #--------- END HASHMAP CLASS DECLARATION -----------#
