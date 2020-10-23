@@ -21,8 +21,7 @@ class HashMap():
         Get index of our array for
         specific string key
         """
-        length = len(self.dictionary)
-        return hash(key) % length
+        return hash(key) % self._capacity
 
     def get(self, key, default=None):
         """
@@ -32,7 +31,7 @@ class HashMap():
         index = self.hash(key)
         if self.dictionary[index] is None:
             return default
-        for i in range(index, len(self.dictionary)):
+        for i in range(index, self._capacity):
             keyValuePair = self.dictionary[i]
             if keyValuePair[0] == key:
                 return keyValuePair[1]
@@ -48,15 +47,16 @@ class HashMap():
         if self.dictionary[index] is not None:
             # If index is already filled at index (collision)
             if self.dictionary[index][0] != key:
-                for i in self.dictionary:
-                    if i[0] is None:
+                for i in range(index, len(self.dictionary)):
+                    if self.dictionary[i] is None:
                         if value is None:
                             value = 1
                         self.dictionary[i] = [key, value]
                         self._size += 1
+                        break
             # If filled and matches key
             else:
-                for keyValuePair in self.dictionary:
+                for keyValuePair in range(index, self.dictionary):
                     if keyValuePair[0] == key: 
                         currValue = keyValuePair[1]
                         self.dictionary[index] = [key, currValue + 1]
@@ -72,7 +72,7 @@ class HashMap():
             if value is None:
                 value = 1
             self.dictionary[index] = [key, value]
-            self.size += 1
+            self._size += 1
         # Check load balance
         if self.isLoadBalanceGreaterThan80():
             self.rehash()
@@ -92,7 +92,6 @@ class HashMap():
         Empty the hashMap
         """
         self._capacity = 8
-        self._keys = []
         self._size = 0
         self.dictionary = [None] * 8
 
@@ -115,10 +114,13 @@ class HashMap():
         current table.
         """
         self._keys = []
-        for index in self.dictionary:
-            if index is not None:
-                self._keys.append(index[0], index[1])
-        self.clear
+        for index in range(0, self._capacity):
+            if self.dictionary[index] is not None:
+                indexKey = self.dictionary[index][0]
+                valueKey = self.dictionary[index][1]
+                keyValuePair = [indexKey, valueKey]
+                self._keys.append(keyValuePair)
+        self.clear()
         self._capacity = 16
         self.dictionary = [None] * 16
         for keyValuePair in self._keys:
