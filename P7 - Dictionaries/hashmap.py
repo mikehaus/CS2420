@@ -6,6 +6,14 @@ Mike Hollingshaus
 #-------- START HASHMAP CLASS DECLARATION --------#
 
 class HashMap():
+    """
+    Hashmap Class: Contains 5 attributes;
+    _capacity: How many buckets there are
+    _size: How many buckets are filled
+    _keys: List that stores keys
+    _values: List that stores values
+    dictionary: The hashmap itself. Initialize to a Null list of size 8
+    """
 
     def __init__(self):
         """
@@ -14,6 +22,7 @@ class HashMap():
         self._capacity = 8
         self._size = 0
         self._keys = []
+        self._values = []
         self.dictionary = [None] * 8
 
     def hash(self, key):
@@ -38,10 +47,10 @@ class HashMap():
         if self.dictionary[index] is None:
             return default
         for i in range(0, self.capacity()):
-            keyValuePair = self.dictionary[i]
-            if keyValuePair is not None:
-                if keyValuePair[0] == key:
-                    return keyValuePair[1]
+            key_value_pair = self.dictionary[i]
+            if key_value_pair is not None:
+                if key_value_pair[0] == key:
+                    return key_value_pair[1]
         return default
 
     def set(self, key, value=None):
@@ -59,7 +68,8 @@ class HashMap():
                         if value is None:
                             value = 1
                         self.dictionary[i] = [key, value]
-                        self._keys.append([key, value])
+                        self._keys.append(key)
+                        self._values.append(value)
                         self._size += 1
                         break
                     elif self.dictionary[i][0] == key:
@@ -82,19 +92,20 @@ class HashMap():
             if value is None:
                 value = 1
             self.dictionary[index] = [key, value]
-            self._keys.append([key, value])
+            self._keys.append(key)
+            self._values.append(value)
             self._size += 1
         # Check load balance
-        if self.isLoadBalanceGreaterThan80():
+        if self.is_Load_Balance_Greater_Than_80():
             self.rehash()
 
-    def isLoadBalanceGreaterThan80(self):
+    def is_Load_Balance_Greater_Than_80(self):
         """
         Checks current load balance of hashMap.
         If >=80% returns true. Else returns false.
         """
-        loadBalance = self._size / self.capacity()
-        if loadBalance >= .8:
+        load_balance = self._size / self.capacity()
+        if load_balance >= .8:
             return True
         return False
 
@@ -124,16 +135,18 @@ class HashMap():
         current table.
         """
         self._keys = []
+        self._values = []
         for index in range(0, self.capacity()):
             if self.dictionary[index] is not None:
-                indexKey = self.dictionary[index][0]
-                valueKey = self.dictionary[index][1]
-                keyValuePair = [indexKey, valueKey]
-                self._keys.append(keyValuePair)
+                index_key = self.dictionary[index][0]
+                value_key = self.dictionary[index][1]
+                keyValuePair = [index_key, value_key]
+                self._keys.append(keyValuePair[0])
+                self._values.append(keyValuePair[1])
         self.clear()
         self._capacity = self._capacity * 2
         self.dictionary = [None] * self._capacity
-        for keyValuePair in self._keys:
-            self.set(keyValuePair[0], keyValuePair[1])
-        
+        for i in range(0, len(self._keys)):
+            self.set(self._keys[i], self._values[i])
+
 #--------- END HASHMAP CLASS DECLARATION -----------#
