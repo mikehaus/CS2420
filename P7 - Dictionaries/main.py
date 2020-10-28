@@ -3,6 +3,7 @@ Main.py CS2420 Project 7
 Mike Hollingshaus
 """
 from hashmap import HashMap
+from operator import itemgetter
 
 def clean_line(raw_line):
     '''
@@ -27,10 +28,18 @@ def main():
     hashmap = HashMap()
     file = open('AliceInWonderland.txt', 'r')
     for line in file:
-        text = file.readline()
-        text = clean_line(text)
-        print(text)
+        text = clean_line(line)
         for word in text:
             hashmap.set(word)
+    file.close()
+    mylist = []
+    for i in hashmap.dictionary:
+        if i is not None:
+            mylist.append(i)
+    mylist.sort(key=lambda x: x[1], reverse=True)
+    print('The most common words are:')
+    for i in range(0, 15):
+        index = mylist[i]
+        print(index[0] + '       ' + str(index[1]))
 
 main()
