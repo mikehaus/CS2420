@@ -2,7 +2,57 @@
 P8 - Graph ADT CS2420
 Mike Hollingshaus
 """
+import math
 
+#------- Vertex Helper Class --------#
+class Vertex:
+    """
+    Vertex Structure to hold vertice info
+    """
+    def __init__(self, label):
+        """
+        Vertex constructor
+        @param label: string name of vertex
+        @param adjacent: list of labels of adjacent vertices used for validation
+        @param adjacent_vertices: list of tuples of adjacent vertices and weights
+        """
+        self.label = label
+        self.adjacent = []
+        self.adjacent_vertices = []
+
+    def add_adjacent(self, adjacent, weight):
+        """
+        Adds adjacent vertex to self of weight weight
+        """
+        self.adjacent.append(adjacent)
+        self.adjacent_vertices.append([adjacent, weight])
+
+    def get_adjacent(self):
+        """
+        returns just list of adjacent labels
+        """
+        return self.adjacent
+
+    def get_adjacent_vertices(self):
+        """
+        Returns all adjacent vertices
+        """
+        return self.adjacent_vertices
+
+    def get_label(self):
+        """
+        Returns label of vertex
+        """
+        return self.label
+
+    def get_weight(self, adjacent):
+        """
+        Returns weight of adjacent vertex
+        """
+        return self.adjacent_vertices
+
+
+#------- BEGIN GRAPH CLASS DEFINITION -------#
 class Graph():
     """
     Graph ADT Class Definition
@@ -10,8 +60,11 @@ class Graph():
     def __init__(self):
         """
         Constructor for Graph
+        @param vertices: list of all vertices
+        @param graph: dictionary representation of graph
         """
         self.vertices = []
+        self.graph = {}
 
     def add_vertex(self, label):
         """
@@ -20,10 +73,12 @@ class Graph():
         Label must be a string or raise ValueError.
         """
         try:
-            str(label)
+            isinstance(label, str)
         except:
             raise ValueError('@param label not of type string')
-        
+
+        self.vertices.append(label)
+        self.graph[label] = Vertex(label)
         return self.graph
 
     def add_edge(self, src, dest, w):
@@ -36,7 +91,18 @@ class Graph():
         @param w.
         Raise ValueError if not valid.
         """
-        return self.graph
+        try:
+            isinstance(src, str)
+            isinstance(dest, str)
+            isinstance(w, float)
+        except:
+            raise ValueError('Parameters for add_edge method of invalid type')
+
+        if src not in self.graph:
+            return self.graph
+        if dest not in self.graph:
+            return self.graph
+        self.graph[src].add_adjacent(self.graph[dest], w)
 
     def get_weight(self, src, dest) -> float:
         """
@@ -45,7 +111,22 @@ class Graph():
         (math.inf if no path exists,
         raise ValueError if src or dest not added to graph).
         """
-        return weight.format(float)
+        # Validating both src and dest in graph
+        try:
+            src in self.graph
+            dest in self.graph
+        except:
+            raise ValueError('Either source or destination vertex not added to graph')
+
+        adjacent_list = self.graph[src].get_adjacent()
+        if dest not in adjacent_list:
+            return math.inf
+        adjacent_vertex_list = self.graph[src].get_adjacent_vertices()
+        # Searches for exact vertex
+        for i in range(adjacent_vertex_list):
+            # Once it gets a match returns the weight
+            if adjacent_list[i] == dest:
+                return float(adjacent_list[1])
 
    def dfs(self, starting_vertex):
        """
@@ -84,3 +165,5 @@ class Graph():
         Produce a string representation of the graph that
         can be used with print().
         """
+
+#------- END GRAPH CLASS DEFINITION --------#
