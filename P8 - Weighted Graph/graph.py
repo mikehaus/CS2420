@@ -65,6 +65,7 @@ class Graph():
         """
         self.vertices = []
         self.graph = {}
+        self.visited = []
 
     def add_vertex(self, label):
         """
@@ -128,12 +129,23 @@ class Graph():
             if adjacent_list[i] == dest:
                 return float(adjacent_list[1])
 
-   def dfs(self, starting_vertex):
+    def dfs(self, starting_vertex):
        """
        Return a generator for traversing the graph
        in depth-first order starting fro the specified vertex.
        Raise a ValueError if the vertex doesn't exist
        """
+       self.dfs_recurse(self.visited, self.graph, starting_vertex)
+
+    def dfs_recurse(self, visited, graph, starting_vertex):
+        """
+        Recursive dfs helper
+        """
+        if starting_vertex not in visited:
+            visited.append(starting_vertex)
+            for adjacent in self.graph.adjacent_vertices:
+                self.dfs_recurse(visited, self.graph, adjacent)
+
 
     def bfs(self, starting_vertex):
         """
@@ -141,6 +153,17 @@ class Graph():
         in breadth-first order starting fro the specified vertex.
         Raise a ValueError if the vertex doesn't exist
         """
+        visited = [False] * (len(self.graph))
+        queue = []
+
+        queue.append(starting_vertex)
+        visited[starting_vertex] = True
+
+        while queue:
+            starting_vertex = queue.pop(0)
+            for vertex in self.graph.adjacent_vertices:
+                queue.append(vertex)
+                visited[vertex] = True
 
     def dijkstra_shortest_path(self, src, dest) -> list:
         """
