@@ -7,7 +7,7 @@ import math
 #------- Vertex Helper Class --------#
 class Vertex:
     """
-    Vertex Structure to hold vertice info
+    Vertex Structure to hold vertex info
     """
     def __init__(self, label):
         """
@@ -24,8 +24,8 @@ class Vertex:
         """
         Adds adjacent vertex to self of weight weight
         """
-        self.adjacent.append(adjacent)
-        self.adjacent_vertices.append([adjacent, weight])
+        self.adjacent.append(adjacent.label)
+        self.adjacent_vertices.append([adjacent.label, weight])
 
     def get_adjacent(self):
         """
@@ -49,7 +49,9 @@ class Vertex:
         """
         Returns weight of adjacent vertex
         """
-        return self.adjacent_vertices
+        for vertex in self.adjacent_vertices:
+            if vertex[0] == adjacent:
+                return vertex[1]
 
 
 #------- BEGIN GRAPH CLASS DEFINITION -------#
@@ -73,10 +75,8 @@ class Graph():
         Return the graph.
         Label must be a string or raise ValueError.
         """
-        try:
-            isinstance(label, str)
-        except:
-            raise ValueError('@param label not of type string')
+        if not type(label) is str:
+            raise ValueError('param label is not string')
 
         self.vertices.append(label)
         self.graph[label] = Vertex(label)
@@ -87,16 +87,12 @@ class Graph():
         Add an edge from vertex src to vertex dest with weight w.
         Return the graph.
         Validate:
-        @param src, 
+        @param src,
         @param dest,
         @param w.
         Raise ValueError if not valid.
         """
-        try:
-            isinstance(src, str)
-            isinstance(dest, str)
-            isinstance(w, float)
-        except:
+        if not type(src) is str or not type(dest) is str or not type(w) is float:
             raise ValueError('Parameters for add_edge method of invalid type')
 
         if src not in self.graph:
@@ -113,10 +109,7 @@ class Graph():
         raise ValueError if src or dest not added to graph).
         """
         # Validating both src and dest in graph
-        try:
-            src in self.graph
-            dest in self.graph
-        except:
+        if src not in self.graph or dest not in self.graph:
             raise ValueError('Either source or destination vertex not added to graph')
 
         adjacent_list = self.graph[src].get_adjacent()
@@ -130,21 +123,22 @@ class Graph():
                 return float(adjacent_list[1])
 
     def dfs(self, starting_vertex):
-       """
-       Return a generator for traversing the graph
-       in depth-first order starting fro the specified vertex.
-       Raise a ValueError if the vertex doesn't exist
-       """
-       self.dfs_recurse(self.visited, self.graph, starting_vertex)
+        """
+        Return a generator for traversing the graph
+        in depth-first order starting fro the specified vertex.
+        Raise a ValueError if the vertex doesn't exist
+        """
+        self.dfs_helper(self.visited, self.graph, starting_vertex)
 
-    def dfs_recurse(self, visited, graph, starting_vertex):
+    def dfs_helper(self, visited, graph, starting_vertex):
         """
         Recursive dfs helper
         """
         if starting_vertex not in visited:
             visited.append(starting_vertex)
-            for adjacent in self.graph.adjacent_vertices:
-                self.dfs_recurse(visited, self.graph, adjacent)
+            for vertex in self.graph:
+                for adjacent in vertex.adjacent_vertices:
+                    self.dfs_recurse(visited, self.graph, adjacent)
 
 
     def bfs(self, starting_vertex):
@@ -153,7 +147,7 @@ class Graph():
         in breadth-first order starting fro the specified vertex.
         Raise a ValueError if the vertex doesn't exist
         """
-        visited = [False] * (len(self.graph))
+        visited = {}
         queue = []
 
         queue.append(starting_vertex)
@@ -172,6 +166,7 @@ class Graph():
         on the path from dest back to src).
         If no path exists, return the tuple (math.inf, empty list).
         """
+        return
 
     def dijkstra_shortest_path(self, src) -> dict:
         """
