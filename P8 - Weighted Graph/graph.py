@@ -75,7 +75,7 @@ class Graph():
         Return the graph.
         Label must be a string or raise ValueError.
         """
-        if not type(label) is str:
+        if not isinstance(label, str):
             raise ValueError('param label is not string')
 
         self.vertices.append(label)
@@ -92,13 +92,13 @@ class Graph():
         @param w.
         Raise ValueError if not valid.
         """
-        if not type(src) is str or not type(dest) is str or not type(w) is float:
+        if not isinstance(src, str) or not isinstance(dest, str) or not isinstance(w, float):
             raise ValueError('Parameters for add_edge method of invalid type')
 
         if src not in self.graph:
-            return self.graph
+            raise ValueError('Parameter src not in Graph')
         if dest not in self.graph:
-            return self.graph
+            raise ValueError('Parameter dest not in Graph')
         self.graph[src].add_adjacent(self.graph[dest], w)
 
     def get_weight(self, src, dest) -> float:
@@ -136,9 +136,9 @@ class Graph():
         """
         if starting_vertex not in visited:
             visited.append(starting_vertex)
-            for vertex in self.graph:
-                for adjacent in vertex.adjacent_vertices:
-                    self.dfs_recurse(visited, self.graph, adjacent)
+            for vertex in graph:
+                for adjacent in graph[vertex].adjacent_vertices:
+                    self.dfs_helper(visited, graph, adjacent)
 
 
     def bfs(self, starting_vertex):
@@ -155,7 +155,7 @@ class Graph():
 
         while queue:
             starting_vertex = queue.pop(0)
-            for vertex in self.graph.adjacent_vertices:
+            for vertex in self.adjacent_vertices:
                 queue.append(vertex)
                 visited[vertex] = True
 
@@ -183,5 +183,20 @@ class Graph():
         Produce a string representation of the graph that
         can be used with print().
         """
+        num_vertices = len(self.vertices)
+        output = 'numVertices: ' + str(num_vertices) + '\n'
+        output += 'Vertex' + '\t' + 'Adjacentcy List' + '\n'
+        for v_label in self.vertices:
+            vertex = self.graph[v_label]
+            vertex_str = vertex.label + '\t'
+            for i in range(0, len(vertex.adjacent_vertices)):
+                adjacent = vertex.adjacent_vertices[i]
+                vertex_str += "[('" + adjacent[0] + ', ' + str(adjacent[1]) + ')'
+                if i < len(vertex.adjacent_vertices) - 1:
+                    vertex_str += ', '
+            vertex_str += ']\n'
+            output += vertex_str
+        return output
+
 
 #------- END GRAPH CLASS DEFINITION --------#
