@@ -159,14 +159,25 @@ class Graph():
         for i in range(len(self.graph[starting_vertex]), 0, -1):
             self.dfs_helper(visited, self.graph[starting_vertex][i - 1][0])
 
-
-    def dijkstra_shortest_path(self, src, dest) -> list:
+    def distance(self, src):
         """
-        @type list
+        Helper function to calculate distance
+        """
+        u = 0.0
+        v = 0.0
+        #for vertex in self.graph[src]:
+        return
+
+    def dijkstra_shortest_path(self, src, dest) -> tuple:
+        """
+        @type tuple
         Return a tuple (path length, the list of the vertices
         on the path from dest back to src).
         If no path exists, return the tuple (math.inf, empty list).
         """
+        dsp = (0.0 [src])
+        #for i in range(len(self.graph[src])):
+
         return
 
     def dijkstra_shortest_path(self, src) -> dict:
@@ -178,6 +189,12 @@ class Graph():
         is a tuple (path length, the list of vertices on the path
         from key back to src).
         """
+        dsp = {}
+        dsp[src] = 0.0
+        min_distance = math.inf
+        for vertex in self.vertices:
+            dsp[vertex] = math.inf
+        return
 
     def __str__(self) -> str:
         """
