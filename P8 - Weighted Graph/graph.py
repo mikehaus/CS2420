@@ -67,7 +67,6 @@ class Graph():
         """
         self.vertices = []
         self.graph = {}
-        self.visited = []
 
     def add_vertex(self, label):
         """
@@ -79,7 +78,7 @@ class Graph():
             raise ValueError('param label is not string')
 
         self.vertices.append(label)
-        self.graph[label] = Vertex(label)
+        self.graph[label] = []
         return self.graph
 
     def add_edge(self, src, dest, w):
@@ -92,14 +91,15 @@ class Graph():
         @param w.
         Raise ValueError if not valid.
         """
-        if not isinstance(src, str) or not isinstance(dest, str) or not isinstance(w, float):
+        if not isinstance(src, str) or not isinstance(dest, str) or not isinstance(w, int):
             raise ValueError('Parameters for add_edge method of invalid type')
 
         if src not in self.graph:
             raise ValueError('Parameter src not in Graph')
         if dest not in self.graph:
             raise ValueError('Parameter dest not in Graph')
-        self.graph[src].add_adjacent(self.graph[dest], w)
+        self.graph[src].append(tuple((dest, float(w))))
+        return self.graph
 
     def get_weight(self, src, dest) -> float:
         """
@@ -111,35 +111,12 @@ class Graph():
         # Validating both src and dest in graph
         if src not in self.graph or dest not in self.graph:
             raise ValueError('Either source or destination vertex not added to graph')
-
-        adjacent_list = self.graph[src].get_adjacent()
-        if dest not in adjacent_list:
-            return math.inf
-        adjacent_vertex_list = self.graph[src].get_adjacent_vertices()
-        # Searches for exact vertex
-        for i in range(adjacent_vertex_list):
-            # Once it gets a match returns the weight
-            if adjacent_list[i] == dest:
-                return float(adjacent_list[1])
-
-    def dfs(self, starting_vertex):
-        """
-        Return a generator for traversing the graph
-        in depth-first order starting fro the specified vertex.
-        Raise a ValueError if the vertex doesn't exist
-        """
-        self.dfs_helper(self.visited, self.graph, starting_vertex)
-
-    def dfs_helper(self, visited, graph, starting_vertex):
-        """
-        Recursive dfs helper
-        """
-        if starting_vertex not in visited:
-            visited.append(starting_vertex)
-            for vertex in graph:
-                for adjacent in graph[vertex].adjacent_vertices:
-                    self.dfs_helper(visited, graph, adjacent)
-
+        vertex = self.graph[src]
+        for i in range(0, len(vertex)):
+            edge = vertex[i]
+            if edge[0] == dest:
+                return edge[1]
+        return math.inf
 
     def bfs(self, starting_vertex):
         """
@@ -147,17 +124,41 @@ class Graph():
         in breadth-first order starting fro the specified vertex.
         Raise a ValueError if the vertex doesn't exist
         """
-        visited = {}
-        queue = []
+        visited = []
+        self.bfs_helper(visited, starting_vertex)
+        return visited
 
-        queue.append(starting_vertex)
-        visited[starting_vertex] = True
+    def bfs_helper(self, visited, starting_vertex):
+        """
+        Recursive bfs helper
+        """
+        if starting_vertex[0] not in visited:
+            visited.append(starting_vertex[0])
+        for adjacent in self.graph[starting_vertex[0]]:
+            if adjacent[0] not in visited:
+                visited.append(adjacent[0])
+        for adjacent in self.graph[starting_vertex[0]]:
+            self.bfs_helper(visited, adjacent)                
 
-        while queue:
-            starting_vertex = queue.pop(0)
-            for vertex in self.adjacent_vertices:
-                queue.append(vertex)
-                visited[vertex] = True
+    def dfs(self, starting_vertex):
+        """
+        Return a generator for traversing the graph
+        in depth-first order starting fro the specified vertex.
+        Raise a ValueError if the vertex doesn't exist
+        """
+        visited = []
+        self.dfs_helper(visited, starting_vertex)
+        return visited
+
+    def dfs_helper(self, visited, starting_vertex):
+        """
+        Helper recursive DFS method.
+        """
+        if starting_vertex[0] not in visited:
+            visited.append(starting_vertex)
+        for i in range(len(self.graph[starting_vertex]), 0, -1):
+            self.dfs_helper(visited, self.graph[starting_vertex][i - 1][0])
+
 
     def dijkstra_shortest_path(self, src, dest) -> list:
         """
@@ -185,14 +186,12 @@ class Graph():
         """
         num_vertices = len(self.vertices)
         output = 'numVertices: ' + str(num_vertices) + '\n'
-        output += 'Vertex' + '\t' + 'Adjacentcy List' + '\n'
-        for v_label in self.vertices:
-            vertex = self.graph[v_label]
-            vertex_str = vertex.label + '\t'
-            for i in range(0, len(vertex.adjacent_vertices)):
-                adjacent = vertex.adjacent_vertices[i]
-                vertex_str += "[('" + adjacent[0] + ', ' + str(adjacent[1]) + ')'
-                if i < len(vertex.adjacent_vertices) - 1:
+        output += 'Vertex' + '\t' + 'Adjacency List' + '\n'
+        for vertex in self.graph:
+            vertex_str = vertex[0] + '\t' + '['
+            for i in range(len(self.graph[vertex])):
+                vertex_str += "('" + self.graph[vertex][i][0] + "', " + str(self.graph[vertex][i][1]) + ')'
+                if (len(self.graph[vertex]) > 1 and i <= len(vertex) - 1):
                     vertex_str += ', '
             vertex_str += ']\n'
             output += vertex_str
