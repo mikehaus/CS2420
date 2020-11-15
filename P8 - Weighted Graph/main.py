@@ -23,10 +23,8 @@ def main():
     g.add_edge("E", "D", 3)
 
     g.add_edge("F", "E", 3)
-    print(g.bfs('A'))
-    print(g.dfs('A'))
-    print(str(g))
-    dsp = g.dijkstra_shortest_path('A', 'B')
-    dsp = g.dijkstra_shortest_path('A')
+    dsp = g.dijkstra_shortest_path('A', 'D')
+    dsp = g.dijkstra_shortest_path('D')
+    print('done')
 
 main()

@@ -79,7 +79,7 @@ class Graph():
 
         self.vertices.append(label)
         self.graph[label] = []
-        return self.graph
+        return self
 
     def add_edge(self, src, dest, w):
         """
@@ -91,7 +91,7 @@ class Graph():
         @param w.
         Raise ValueError if not valid.
         """
-        if not isinstance(src, str) or not isinstance(dest, str) or not isinstance(w, int):
+        if not isinstance(src, str) or not isinstance(dest, str) or not (isinstance(w, float) or isinstance(w, int)):
             raise ValueError('Parameters for add_edge method of invalid type')
 
         if src not in self.graph:
@@ -99,7 +99,7 @@ class Graph():
         if dest not in self.graph:
             raise ValueError('Parameter dest not in Graph')
         self.graph[src].append(tuple((dest, float(w))))
-        return self.graph
+        return self
 
     def get_weight(self, src, dest) -> float:
         """
@@ -167,7 +167,8 @@ class Graph():
         path_weight = distances[u][0] + self.get_weight(u, v)
         if path_weight < distances[v][0]:
             distances[v][0] = path_weight
-            path_list = distances[u][1]
+            path_list = []
+            path_list += distances[u][1]
             distances[v][1] = path_list
             distances[v][1].append(v)
 
@@ -180,8 +181,14 @@ class Graph():
         If destination node not provided, calculates overall dsp for single vertex.
         """
         # If no second argument provided returns dictionary
+        if src not in self.graph:
+            raise ValueError('Argument src not key in graph')
+
         if dest == 'null':
-            return dsp_dict(src)
+            return self.dsp_dict(src)
+
+        if src == dest:
+            return (0.0, [src])
 
         dsp = (0.0, [])
         default = (math.inf, [])
@@ -192,21 +199,37 @@ class Graph():
                 distances[vertex] = [math.inf, []]
             else:
                 visited.append(vertex)
-                distances[vertex] = [0.0, [vertex]]   
+                distances[vertex] = [0.0, [vertex]]
 
         current = src
         index = 0
-        while dest not in visited:
+        #while dest not in visited:
+        while index <= 6:
             for vertex in self.graph[current]:
                 self.minDistance(current, vertex[0], distances)
                 visited.append(vertex[0])
-                if vertex[1] == dest:
-                    dsp = distances[vertex[1]]
-                    return dsp
+                #if vertex[0] == dest:
+                    # I'm too lazy to go back and prepend stuff
+                    #distances[vertex[0]][1].reverse()
+                    #dsp = (distances[vertex[0]][0], distances[vertex[0]][1])
+                    #return dsp
             index += 1
+            if index >= len(visited):
+                return default
             current = visited[index]
-
-        return dsp
+        min_dist = []
+        for vertex in distances:
+            distances[vertex][1].reverse
+            vertex_arr = distances[vertex]
+            if vertex_arr[1][0] == src and vertex_arr[1][len(vertex_arr[1]) - 1] == dest:
+                if len(min_dist) == 0:
+                    min_dist = vertex_arr
+                elif min_dist[0] > vertex_arr[1][0]:
+                    min_dist = vertex_arr
+        if len(min_dist) == 0:
+            return default
+        min_dist[1].reverse()
+        return (min_dist[0], min_dist[1])
 
     def dsp_dict(self, src):
         """
@@ -236,7 +259,7 @@ class Graph():
             vertex_str = vertex[0] + '\t' + '['
             for i in range(len(self.graph[vertex])):
                 vertex_str += "('" + self.graph[vertex][i][0] + "', " + str(self.graph[vertex][i][1]) + ')'
-                if (len(self.graph[vertex]) > 1 and i <= len(vertex) - 1):
+                if (len(self.graph[vertex]) > 1 and i < len(vertex) - 1):
                     vertex_str += ', '
             vertex_str += ']\n'
             output += vertex_str
