@@ -138,7 +138,7 @@ class Graph():
             if adjacent[0] not in visited:
                 visited.append(adjacent[0])
         for adjacent in self.graph[starting_vertex[0]]:
-            self.bfs_helper(visited, adjacent)                
+            self.bfs_helper(visited, adjacent)     
 
     def dfs(self, starting_vertex):
         """
@@ -159,25 +159,17 @@ class Graph():
         for i in range(len(self.graph[starting_vertex]), 0, -1):
             self.dfs_helper(visited, self.graph[starting_vertex][i - 1][0])
 
-    def min_distance(self, src):
+    def minDistance(self, u, v, distances):
         """
-        Finds vertex with min distance value from
-        adjacent vertices in graph
+        Compares distances between two vertices and
+        updates distance if necessary
         """
-        min_dist = [0.0, None]
-        adjacent_vertices = self.graph[src]
-        if len(adjacent_vertices) == 0:
-            return [math.inf, None]
-        for i in len(adjacent_vertices):
-            if i == 0:
-                min_dist[0] = adjacent_vertices[i][0]
-                min_dist[1] = adjacent_vertices[i][1]
-            else:
-                if adjacent_vertices[i][0] < min_dist[0]:
-                    min_dist[0] = adjacent_vertices[i][0]
-                    min_dist[1] = adjacent_vertices[i][i]
-        return min_dist
-
+        path_weight = distances[u][0] + self.get_weight(u, v)
+        if path_weight < distances[v][0]:
+            distances[v][0] = path_weight
+            path_list = distances[u][1]
+            distances[v][1] = path_list
+            distances[v][1].append(v)
 
     def dijkstra_shortest_path(self, src, dest='null'):
         """
@@ -191,16 +183,28 @@ class Graph():
         if dest == 'null':
             return dsp_dict(src)
 
+        dsp = (0.0, [])
+        default = (math.inf, [])
+        visited = []
         distances = {}
-        distances[src] = 0.0
-        not_seen = []
         for vertex in self.vertices:
             if vertex != src:
-                distances[vertex] = math.inf
-                not_seen.append(vertex)
+                distances[vertex] = [math.inf, []]
+            else:
+                visited.append(vertex)
+                distances[vertex] = [0.0, [vertex]]   
 
-        while len(not_seen) != 0:
-            
+        current = src
+        index = 0
+        while dest not in visited:
+            for vertex in self.graph[current]:
+                self.minDistance(current, vertex[0], distances)
+                visited.append(vertex[0])
+                if vertex[1] == dest:
+                    dsp = distances[vertex[1]]
+                    return dsp
+            index += 1
+            current = visited[index]
 
         return dsp
 
