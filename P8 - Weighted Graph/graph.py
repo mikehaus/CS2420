@@ -159,28 +159,52 @@ class Graph():
         for i in range(len(self.graph[starting_vertex]), 0, -1):
             self.dfs_helper(visited, self.graph[starting_vertex][i - 1][0])
 
-    def distance(self, src):
+    def min_distance(self, src):
         """
-        Helper function to calculate distance
+        Finds vertex with min distance value from
+        adjacent vertices in graph
         """
-        u = 0.0
-        v = 0.0
-        #for vertex in self.graph[src]:
-        return
+        min_dist = [0.0, None]
+        adjacent_vertices = self.graph[src]
+        if len(adjacent_vertices) == 0:
+            return [math.inf, None]
+        for i in len(adjacent_vertices):
+            if i == 0:
+                min_dist[0] = adjacent_vertices[i][0]
+                min_dist[1] = adjacent_vertices[i][1]
+            else:
+                if adjacent_vertices[i][0] < min_dist[0]:
+                    min_dist[0] = adjacent_vertices[i][0]
+                    min_dist[1] = adjacent_vertices[i][i]
+        return min_dist
 
-    def dijkstra_shortest_path(self, src, dest) -> tuple:
+
+    def dijkstra_shortest_path(self, src, dest='null'):
         """
         @type tuple
         Return a tuple (path length, the list of the vertices
         on the path from dest back to src).
         If no path exists, return the tuple (math.inf, empty list).
+        If destination node not provided, calculates overall dsp for single vertex.
         """
-        dsp = (0.0 [src])
-        #for i in range(len(self.graph[src])):
+        # If no second argument provided returns dictionary
+        if dest == 'null':
+            return dsp_dict(src)
 
-        return
+        distances = {}
+        distances[src] = 0.0
+        not_seen = []
+        for vertex in self.vertices:
+            if vertex != src:
+                distances[vertex] = math.inf
+                not_seen.append(vertex)
 
-    def dijkstra_shortest_path(self, src) -> dict:
+        while len(not_seen) != 0:
+            
+
+        return dsp
+
+    def dsp_dict(self, src):
         """
         Return a dictionary of the shortest weighted path
         between src and all other vertices using Dijkstra's
@@ -189,12 +213,12 @@ class Graph():
         is a tuple (path length, the list of vertices on the path
         from key back to src).
         """
+        # This one basically does shortest path for all vertices
+        # in a simple for loop using original Dijkstra function
         dsp = {}
-        dsp[src] = 0.0
-        min_distance = math.inf
         for vertex in self.vertices:
-            dsp[vertex] = math.inf
-        return
+            dsp[vertex] = self.dijkstra_shortest_path(src, vertex)
+        return dsp
 
     def __str__(self) -> str:
         """
